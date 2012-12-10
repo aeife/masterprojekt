@@ -9,10 +9,10 @@ require 'class.PHPWebSocket.php';
 $players = [];
 $gridSize = 50;
 $spawns = [];
-$spawns[0] = ['x' => 5, 'y' => $gridSize/2];
-$spawns[1] = ['x' => $gridSize-5, 'y' => $gridSize/2];
-$spawns[2] = ['x' => $gridSize/2, 'y' => 5];
-$spawns[3] = ['x' => $gridSize/2, 'y' => $gridSize-5];
+$spawns[0] = ['x' => 5, 'y' => $gridSize/2, 'direction' => "east"];
+$spawns[1] = ['x' => $gridSize-5, 'y' => $gridSize/2, 'direction' => "west"];
+$spawns[2] = ['x' => $gridSize/2, 'y' => 5, 'direction' => "south"];
+$spawns[3] = ['x' => $gridSize/2, 'y' => $gridSize-5, 'direction' => "north"];
 $colors = ['blue', 'red', 'green', 'pink'];
 
 
@@ -62,7 +62,7 @@ function wsOnOpen($clientId)
 {
 	global $Server, $players, $gridSize, $spawns, $colors;
 
-	$spawn = ['x' => $spawns[sizeof($players)]['x'], 'y' =>  $spawns[sizeof($players)]['y']];
+	$spawn = ['x' => $spawns[sizeof($players)]['x'], 'y' =>  $spawns[sizeof($players)]['y'], 'direction' => $spawns[sizeof($players)]['direction']];
     $color = $colors[sizeof($players)];
 
     if (sizeof($players) == 0)
@@ -72,7 +72,7 @@ function wsOnOpen($clientId)
 
 	array_push($players, ['clientId' => $clientId, 'spawn' => $spawn, 'host' => $host, 'color' => $color]);
 
-	$connectionData = ['clientId' => $clientId, 'players' => $players, 'spawn' => $spawn];
+	$connectionData = ['clientId' => $clientId, 'players' => $players, 'spawn' => $spawn, 'gridSize' => $gridSize];
 
 	emit($clientId, 'successfulConnected', $connectionData);
 	broadcast($clientId, 'newPlayerConnected', ['clientId' => $clientId, 'spawn' => $spawn, 'color' => $color]);

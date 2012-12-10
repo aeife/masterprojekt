@@ -56,7 +56,7 @@ function start(){
         }, 1000);
         var moveInterval = setInterval(function(){
             socket.emit('getMovePlayers');
-        }, 1000);
+        }, 50);
     }
 }
 
