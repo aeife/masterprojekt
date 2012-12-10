@@ -36,18 +36,18 @@ var server = app.listen(app.get('port'), '192.168.1.196', function(){
 
 var io = require('socket.io').listen(server);
 var players = [];
-var gridSize = 50;
+var gridSize = 20;
 var spawns = [];
-spawns[0] = {x: 5, y: gridSize/2};
-spawns[1] = {x: gridSize-5, y: gridSize/2};
-spawns[2] = {x: gridSize/2, y: 5};
-spawns[3] = {x: gridSize/2, y: gridSize-5};
+spawns[0] = {x: 5, y: gridSize/2, direction: "east"};
+spawns[1] = {x: gridSize-5, y: gridSize/2, direction: "west"};
+spawns[2] = {x: gridSize/2, y: 5, direction: "south"};
+spawns[3] = {x: gridSize/2, y: gridSize-5, direction: "north"};
 var colors = ['blue', 'red', 'green', 'pink'];
 
 
 io.sockets.on('connection', function(socket){
     var clientId = socket.id;
-    var spawn = {x: spawns[players.length].x, y: spawns[players.length].y};
+    var spawn = {x: spawns[players.length].x, y: spawns[players.length].y, direction: spawns[players.length].direction};
     var color = colors[players.length];
 
     if (players.length === 0)
@@ -58,7 +58,7 @@ io.sockets.on('connection', function(socket){
     players.push({clientId: clientId, spawn: spawn, host: host, color: color});
 
     
-    var connectionData = {clientId: clientId, players: players, spawn: spawn};
+    var connectionData = {clientId: clientId, players: players, spawn: spawn, gridSize: gridSize};
 
     socket.emit('successfulConnected', connectionData);
     socket.broadcast.emit('newPlayerConnected', {clientId: clientId, spawn: spawn, color: color});

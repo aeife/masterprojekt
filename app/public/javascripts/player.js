@@ -1,7 +1,7 @@
-function Player (x, y, color){
+function Player (x, y, direction, color){
     this.color = color;
     this.fields = [];
-    this.direction = "north";
+    this.direction = direction;
     this.id = 0;
     this.host = false;
 
@@ -14,14 +14,26 @@ function Player (x, y, color){
 Player.prototype.spawnPlayer = function(x,y){
     this.fields = [];
 
-    this.fields[3] = {x: x, y: y-2}
-    level.grid[x][y-2].player = true;
-    this.fields[2] = {x: x, y: y-1}
-    level.grid[x][y-1].player = true;
-    this.fields[1] = {x: x, y: y}
-    level.grid[x][y].player = true;
-    this.fields[0] = {x: x, y: y+1}
-    level.grid[x][y+1].player = true;
+    for (var i = 0; i < 3; i++){
+        switch (this.direction){
+            case "north":
+                this.fields[i] = {x: x, y: y+2-i};
+                level.grid[x][y+2-i].player = true;
+                break;
+            case "east":
+                this.fields[i] = {x: x-2+i, y: y};
+                level.grid[x-2+i][y].player = true;
+                break;
+            case "south":
+                this.fields[i] = {x: x, y: y-2+i};
+                level.grid[x][y-2+i].player = true;
+                break;
+            case "west":
+                this.fields[i] = {x: x+2-i, y: y};
+                level.grid[x+2-i][y].player = true;
+                break;
+        }
+    }
 
     this.printPlayer();
 }
@@ -107,10 +119,10 @@ Player.prototype.move = function(){
             break;
     }
     
-    this.checkCollision();
-
-    level.grid[this.fields[this.fields.length-1].x][this.fields[this.fields.length-1].y].player = true;
-    level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
+    if (!this.checkCollision()){
+        level.grid[this.fields[this.fields.length-1].x][this.fields[this.fields.length-1].y].player = true;
+        level.drawTile(this.fields[this.fields.length-1].x, this.fields[this.fields.length-1].y, this.color);
+    }
 
 }
 
@@ -126,7 +138,10 @@ Player.prototype.checkCollision = function(){
     if (level.grid[headX][headY].player){
         this.kill(1);
         socket.emit('disconnect');
+        return true;
     }
+
+    return false;
 }
 
 Player.prototype.kill = function(disconnected){

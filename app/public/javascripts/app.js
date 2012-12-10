@@ -2,9 +2,8 @@
 var canvas = $("#canvas");
 var ctx = canvas[0].getContext("2d");
 
-//level
-level.initializeGrid();
-level.printGrid();
+//vars
+var gameStarted = false;
 
 //controls
 document.onkeydown = function(e) {
@@ -32,7 +31,8 @@ document.onkeydown = function(e) {
             break;
         case 71:
             //go
-            sendStartGame();
+            if (player.host && !gameStarted)
+                sendStartGame();
             //start();
             break;
     };
@@ -51,12 +51,12 @@ function start(){
     //var moveInterval = setInterval('moveAllPlayers()', 500);
     if (player.host){
         console.log("ICH BIN HOST!");
-        var moveInterval = setInterval(function(){
+        var foodInterval = setInterval(function(){
             socket.emit('getNewFoodCoordinates'); 
         }, 1000);
-        var foodInterval = setInterval(function(){
+        var moveInterval = setInterval(function(){
             socket.emit('getMovePlayers');
-        }, 50);
+        }, 1000);
     }
 }
 
@@ -84,12 +84,16 @@ function sendStartGame(){
 
 //INPUT
 socket.on('successfulConnected', function(data){
+
+    //level
+    level.initializeGrid(data.gridSize);
+
     //player
     //player = new Player(data.spawn.x, data.spawn.y);
     //player.id = data.clientId;
 
     for (var i = 0; i < data.players.length; i++){
-        var newPlayer = new Player (data.players[i].spawn.x, data.players[i].spawn.y, data.players[i].color);
+        var newPlayer = new Player (data.players[i].spawn.x, data.players[i].spawn.y, data.players[i].spawn.direction, data.players[i].color);
         newPlayer.id = data.players[i].clientId;
         newPlayer.host = data.players[i].host;
         players.push(newPlayer);
@@ -101,7 +105,7 @@ socket.on('successfulConnected', function(data){
 
 socket.on('newPlayerConnected', function(data){
 
-    var newPlayer = new Player(data.spawn.x, data.spawn.y, data.color);
+    var newPlayer = new Player(data.spawn.x, data.spawn.y, data.spawn.direction, data.color);
     newPlayer.id = data.clientId;
     players.push(newPlayer);
 
@@ -115,6 +119,7 @@ socket.on('playerSentNewDirection', function(data){
 
 socket.on('playerStartedGame', function(){
     start();
+    gameStarted = true;
 });
 
 socket.on('newFoodCoordinates', function(data){

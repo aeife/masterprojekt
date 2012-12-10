@@ -2,13 +2,17 @@ var level = {
 	grid: [],
 	gridSize: 50,
 	tileSize: 10,
-	initializeGrid: function(){
+	initializeGrid: function(gridSize){
+		this.gridSize = gridSize;
+
 		for (var i = 0; i < this.gridSize; i++) {
 		    this.grid[i] = [];
 		    for (var j = 0; j < this.gridSize; j++){
 		        this.grid[i][j] = {food: 0, player: false};
 		    }
 		}
+		
+		this.printGrid();
 	},
 	printGrid: function(){
 		for (var x = 0; x < this.gridSize; x++){
