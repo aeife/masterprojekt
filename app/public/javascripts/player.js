@@ -1,9 +1,10 @@
-function Player (x, y, direction, color){
+function Player (x, y, direction, color, username){
     this.color = color;
     this.fields = [];
     this.direction = direction;
     this.id = 0;
     this.host = false;
+    this.username = username;
 
     this.ate = 0;
 

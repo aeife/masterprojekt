@@ -1,0 +1,28 @@
+<?php
+session_start();
+if (isset($_POST['name']) && isset($_POST['password'])){
+ 
+    $name = $_POST['name'];
+    $password = md5($_POST['password']);
+
+    //db
+    $username="root";
+    $database="masterprojekt";
+
+    mysql_connect('localhost',$username, "");
+    mysql_select_db($database);
+
+    $result = mysql_query("SELECT * FROM user WHERE name = '" . $name . "'");
+
+    $row = mysql_fetch_array($result);
+    
+    if ($password == $row['password']){
+        $_SESSION['username'] = $row['name'];
+
+        header( 'Location: index.php' ) ;
+    } else {
+        echo "error";
+    }
+}
+
+?>

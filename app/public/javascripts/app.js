@@ -81,6 +81,10 @@ function sendStartGame(){
     socket.emit('startGame');
 }
 
+function sendNewName(){
+    socket.emit('newName', {username: player.username});
+}
+
 
 //INPUT
 socket.on('successfulConnected', function(data){
@@ -93,19 +97,24 @@ socket.on('successfulConnected', function(data){
     //player.id = data.clientId;
 
     for (var i = 0; i < data.players.length; i++){
-        var newPlayer = new Player (data.players[i].spawn.x, data.players[i].spawn.y, data.players[i].spawn.direction, data.players[i].color);
+        var newPlayer = new Player (data.players[i].spawn.x, data.players[i].spawn.y, data.players[i].spawn.direction, data.players[i].color, data.players[i].username);
         newPlayer.id = data.players[i].clientId;
         newPlayer.host = data.players[i].host;
         players.push(newPlayer);
     }
     player = players[players.length-1];
 
+    if (!(typeof username === 'undefined'))
+        player.username = username;
+
+    sendNewName();
+
     console.log(players);
 });
 
 socket.on('newPlayerConnected', function(data){
 
-    var newPlayer = new Player(data.spawn.x, data.spawn.y, data.spawn.direction, data.color);
+    var newPlayer = new Player(data.spawn.x, data.spawn.y, data.spawn.direction, data.color, data.username);
     newPlayer.id = data.clientId;
     players.push(newPlayer);
 

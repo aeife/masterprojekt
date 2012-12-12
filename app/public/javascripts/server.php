@@ -34,6 +34,9 @@ function wsOnMessage($clientId, $message, $messageLength, $binary) {
         case "newDirection":
             newDirection($clientId, $data->content);
             break;
+        case "newName":
+            newName($clientId, $data->content);
+            break;
 	}	
 }
 
@@ -57,6 +60,20 @@ function newDirection($clientId, $data){
     emitAll('playerSentNewDirection', ['clientId' => $clientId, 'direction' => $data->direction]);
 }
 
+function newName($clientId, $data){
+    global $spawns, $colors, $players;
+    for ($i = 0; $i < sizeof($players); $i++) {
+        if ($players[$i]['clientId'] == $clientId) {
+            $players[$i]['username'] = $data->username;
+        }
+    }
+
+    $spawn = ['x' => $spawns[sizeof($players)-1]['x'], 'y' =>  $spawns[sizeof($players)-1]['y'], 'direction' => $spawns[sizeof($players)-1]['direction']];
+    $color = $colors[sizeof($players)-1];
+
+    broadcast($clientId, 'newPlayerConnected', ['clientId' => $clientId, 'spawn' => $spawn, 'color' => $color, 'username' => $data->username]);
+}
+
 // when a client connects
 function wsOnOpen($clientId)
 {
@@ -70,12 +87,12 @@ function wsOnOpen($clientId)
     else
         $host = false;
 
-	array_push($players, ['clientId' => $clientId, 'spawn' => $spawn, 'host' => $host, 'color' => $color]);
+	array_push($players, ['clientId' => $clientId, 'spawn' => $spawn, 'host' => $host, 'color' => $color, 'username' => 'Guest']);
 
 	$connectionData = ['clientId' => $clientId, 'players' => $players, 'spawn' => $spawn, 'gridSize' => $gridSize];
 
 	emit($clientId, 'successfulConnected', $connectionData);
-	broadcast($clientId, 'newPlayerConnected', ['clientId' => $clientId, 'spawn' => $spawn, 'color' => $color]);
+	
 
 
 /*
