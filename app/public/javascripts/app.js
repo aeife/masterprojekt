@@ -41,7 +41,7 @@ document.onkeydown = function(e) {
 //players
 var players = [];
 var player;
-
+deathNotSent = true;
 
 //gameloop
 //setInterval('player.move(player.direction)', 50);
@@ -65,6 +65,10 @@ function moveAllPlayers(){
     for (var i = 0; i < players.length; i++){
         players[i].move(players[i].direction);
     }
+    if (player.isDead() && deathNotSent){
+        sendDeath();
+        deathNotSent = false;
+    }
 }   
 
 
@@ -83,6 +87,11 @@ function sendStartGame(){
 
 function sendNewName(){
     socket.emit('newName', {username: player.username});
+}
+
+function sendDeath(){
+    console.log("SENDING OWN DEATH");
+    socket.emit('dead', {username: player.username});
 }
 
 

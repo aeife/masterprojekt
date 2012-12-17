@@ -154,6 +154,7 @@ Player.prototype.kill = function(disconnected){
         level.grid[this.fields[i].x][this.fields[i].y].player = false;
         level.drawTile(this.fields[i].x, this.fields[i].y, 'white');
     }
+    this.fields = [];
 
     var client = searchPlayerById(this.id);
     players.splice(players.indexOf(client), 1);
@@ -161,4 +162,10 @@ Player.prototype.kill = function(disconnected){
 
 Player.prototype.eat = function(value){
     this.ate += value;
+}
+
+Player.prototype.isDead = function(){
+    if (this.fields.length === 0)
+        return true;
+    return false;
 }

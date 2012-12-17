@@ -19,7 +19,7 @@ exports.auth = function(req, res){
         var username = req.body.name;
         //create md5
         var password = require('crypto').createHash('md5').update(req.body.password).digest("hex");
-console.log(req.session);
+
         //find one and only user with credentials
         collection.findOne({username: username, password: password}, function (err, users){
             if(err) throw err;
@@ -28,7 +28,7 @@ console.log(req.session);
             if (users){
                 req.session.username = username;
             }
-            
+
 
             //redirect
             res.redirect('/');

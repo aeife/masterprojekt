@@ -48,6 +48,7 @@ spawns[1] = {x: gridSize-5, y: gridSize/2, direction: "west"};
 spawns[2] = {x: gridSize/2, y: 5, direction: "south"};
 spawns[3] = {x: gridSize/2, y: gridSize-5, direction: "north"};
 var colors = ['blue', 'red', 'green', 'pink'];
+var places = [];
 
 
 io.sockets.on('connection', function(socket){
@@ -114,6 +115,60 @@ io.sockets.on('connection', function(socket){
         var color = colors[players.length-1];
 
         socket.broadcast.emit('newPlayerConnected', {clientId: clientId, spawn: spawn, color: color, username: data.username});
+    });
+
+    socket.on("dead", function(data){
+        places.push(data.username);
+
+        //check if game over
+        if (places.length === players.length-1){
+            console.log("GAME OVER");
+            //game over
+            for (var i = 0; i < players.length; i++){
+                var isDead = false;
+                for (var j = 0; j < places.length; j++){
+                    if (players[i].username === places[j]){
+                        isDead = true;
+                    }
+                }
+                if (!isDead) {
+                    places.push(players[i].username);
+                    break;
+                }
+            }
+
+            //db
+            //require database connection
+            var db = require('./database.js');
+
+            //init database
+            db.init(function(err, db) {
+                if(err) throw err;
+
+                //select table of db
+                var collection = db.collection('game');
+                var newGameId = 0;
+
+                collection.findOne({}, {'sort': {id: -1}} , function (err, games){
+                    if(err) throw err;
+                    
+                    if (games){
+                        console.log(games);
+                        for (var i = 0; i < places.length; i++){
+                            collection.insert({id: games.id+1, username: places[i], place: places.length-i}, {w:1}, function(err, result) {
+                                if (err) throw err;
+                            });
+                        }
+                    }
+
+                });
+
+            });
+
+            //sendGameOver
+        }
+
+        console.log(places);
     });
 
     socket.on("disconnect", function(data){
