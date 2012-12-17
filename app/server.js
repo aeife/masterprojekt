@@ -7,6 +7,7 @@ var express = require('express')
     , routes = require('./routes')
     , user = require('./routes/user')
     , login = require('./routes/login')
+    , score = require('./routes/score')
     , http = require('http')
     , path = require('path');
 
@@ -34,6 +35,8 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/login', login.form);
 app.post('/login', login.auth);
+app.get('/score', score.list);
+app.get('/score/:id', score.details);
 
 var server = app.listen(app.get('port'), '192.168.1.196', function(){
     console.log("Express server listening on port " + app.get('port'));
