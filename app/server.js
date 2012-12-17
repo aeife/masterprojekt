@@ -36,6 +36,7 @@ app.get('/users', user.list);
 app.get('/login', login.form);
 app.post('/login', login.auth);
 app.get('/score', score.list);
+app.get('/score/players', score.players);
 app.get('/score/:id', score.details);
 
 var server = app.listen(app.get('port'), '192.168.1.196', function(){

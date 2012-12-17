@@ -3,8 +3,11 @@
     <head>
     </head>
     <body>
-        <% for(var i=0; i<games.length; i++) {%>
-           <li><a href = '/score/<%= games[i] %>'>Game <%= games[i] %></a></li>
-        <% } %>
+        <a href = '/score/players'>Player Score</a>
+        <ul>
+            <% for(var i=0; i<games.length; i++) {%>
+               <li><a href = '/score/<%= games[i] %>'>Game <%= games[i] %></a></li>
+            <% } %>
+        </ul>
     </body>
 </html>
