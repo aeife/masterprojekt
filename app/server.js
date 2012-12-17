@@ -6,6 +6,7 @@
 var express = require('express')
     , routes = require('./routes')
     , user = require('./routes/user')
+    , login = require('./routes/login')
     , http = require('http')
     , path = require('path');
 
@@ -19,6 +20,8 @@ app.configure(function(){
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
+    app.use(express.cookieParser('your secret here'));
+    app.use(express.session());
     app.use(app.router);
     app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -29,6 +32,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/login', login.form);
+app.post('/login', login.auth);
 
 var server = app.listen(app.get('port'), '192.168.1.196', function(){
     console.log("Express server listening on port " + app.get('port'));
@@ -55,15 +60,12 @@ io.sockets.on('connection', function(socket){
     else 
         var host = false;
 
-    players.push({clientId: clientId, spawn: spawn, host: host, color: color});
+    players.push({clientId: clientId, spawn: spawn, host: host, color: color, username: 'Guest'});
 
     
     var connectionData = {clientId: clientId, players: players, spawn: spawn, gridSize: gridSize};
 
-    socket.emit('successfulConnected', connectionData);
-    socket.broadcast.emit('newPlayerConnected', {clientId: clientId, spawn: spawn, color: color});
-
-    
+    socket.emit('successfulConnected', connectionData); 
 
     socket.on("startGame", function(){
         io.sockets.emit('playerStartedGame');
@@ -96,6 +98,22 @@ io.sockets.on('connection', function(socket){
     socket.on("newDirection", function(data){
         console.log("NEW DIRECTION FROM: " + socket.id);
         io.sockets.emit('playerSentNewDirection', {clientId: socket.id, direction: data.direction});
+    });
+
+    socket.on("newName", function(data){
+        console.log("NEW NAME FROM: " + socket.id);
+
+        for (var i = 0; i < players.length; i++){
+            if (players[i].clientId === socket.id){
+                players[i].username = data.username;
+                break;
+            }
+        }
+
+        var spawn = {x: spawns[players.length-1].x, y: spawns[players.length-1].y, direction: spawns[players.length-1].direction};
+        var color = colors[players.length-1];
+
+        socket.broadcast.emit('newPlayerConnected', {clientId: clientId, spawn: spawn, color: color, username: data.username});
     });
 
     socket.on("disconnect", function(data){

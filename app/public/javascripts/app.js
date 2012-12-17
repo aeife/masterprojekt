@@ -104,8 +104,9 @@ socket.on('successfulConnected', function(data){
     }
     player = players[players.length-1];
 
-    if (!(typeof username === 'undefined'))
+    if (!(typeof username === 'undefined')){
         player.username = username;
+    }
 
     sendNewName();
 
