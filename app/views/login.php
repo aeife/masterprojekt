@@ -1,28 +1,13 @@
-<?php
-session_start();
-if (isset($_POST['name']) && isset($_POST['password'])){
- 
-    $name = $_POST['name'];
-    $password = md5($_POST['password']);
-
-    //db
-    $username="root";
-    $database="masterprojekt";
-
-    mysql_connect('localhost',$username, "");
-    mysql_select_db($database);
-
-    $result = mysql_query("SELECT * FROM user WHERE name = '" . $name . "'");
-
-    $row = mysql_fetch_array($result);
-    
-    if ($password == $row['password']){
-        $_SESSION['username'] = $row['name'];
-
-        header( 'Location: game.php' ) ;
-    } else {
-        echo "error";
-    }
-}
-
-?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php session_start(); ?>
+    </head>
+    <body>
+        <form action="loginDB.php" method="post">
+            name: <input type="text" name="name"><br>
+            Password: <input type="password" name="password">
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>

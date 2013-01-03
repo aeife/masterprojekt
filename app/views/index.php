@@ -4,9 +4,9 @@
         
     </head>
     <body>
-       <a href = "game.php">Play As Guest</a> <br/>
-       <a href = "login.html">Play As User</a> <br/>
-       <a href = "score.php">Game Archive</a> <br/>
-       <a href = "scorePlayers.php">Player Highscore</a>
+       <a href = "game">Play As Guest</a> <br/>
+       <a href = "login">Play As User</a> <br/>
+       <a href = "score">Game Archive</a> <br/>
+       <a href = "score/players">Player Highscore</a>
     </body>
 </html>

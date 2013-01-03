@@ -156,6 +156,10 @@ socket.on('playerDisconnected', function(data){
     
 });
 
+socket.on('gameOver', function(data){
+    window.location = "/score/" + data.gameId;
+});
+
 //API
 
 function searchPlayerById(id){

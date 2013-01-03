@@ -142,6 +142,9 @@ io.sockets.on('connection', function(socket){
                     break;
                 }
             }
+            if (places.length != players.length){
+                places.push("Guest");
+            }
 
             //db
             //require database connection
@@ -167,11 +170,14 @@ io.sockets.on('connection', function(socket){
                         }
                     }
 
+                //sendGameOver
+                io.sockets.emit('gameOver', {gameId: games.id+1});
+
                 });
 
             });
 
-            //sendGameOver
+            
         }
 
         console.log(places);
