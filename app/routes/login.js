@@ -31,7 +31,7 @@ exports.auth = function(req, res){
 
 
             //redirect
-            res.redirect('/');
+            res.redirect('/game');
         });
 
     });

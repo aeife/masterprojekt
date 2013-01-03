@@ -8,6 +8,7 @@ var express = require('express')
     , user = require('./routes/user')
     , login = require('./routes/login')
     , score = require('./routes/score')
+    , game = require('./routes/game')
     , http = require('http')
     , path = require('path');
 
@@ -32,6 +33,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/game', game.game);
 app.get('/users', user.list);
 app.get('/login', login.form);
 app.post('/login', login.auth);
@@ -45,7 +47,7 @@ var server = app.listen(app.get('port'), '192.168.1.196', function(){
 
 var io = require('socket.io').listen(server);
 var players = [];
-var gridSize = 20;
+var gridSize = 50;
 var spawns = [];
 spawns[0] = {x: 5, y: gridSize/2, direction: "east"};
 spawns[1] = {x: gridSize-5, y: gridSize/2, direction: "west"};

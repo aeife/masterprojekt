@@ -19,7 +19,7 @@ if (isset($_POST['name']) && isset($_POST['password'])){
     if ($password == $row['password']){
         $_SESSION['username'] = $row['name'];
 
-        header( 'Location: index.php' ) ;
+        header( 'Location: game.php' ) ;
     } else {
         echo "error";
     }
