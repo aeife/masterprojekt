@@ -7,6 +7,7 @@
     <body>
         <script>
             <?php 
+
                 if (isset($_SESSION['username']))
                     echo 'var username = '.json_encode($_SESSION['username']).';'; 
             ?>

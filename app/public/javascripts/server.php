@@ -14,6 +14,7 @@ $spawns[1] = ['x' => $gridSize-5, 'y' => $gridSize/2, 'direction' => "west"];
 $spawns[2] = ['x' => $gridSize/2, 'y' => 5, 'direction' => "south"];
 $spawns[3] = ['x' => $gridSize/2, 'y' => $gridSize-5, 'direction' => "north"];
 $colors = ['blue', 'red', 'green', 'pink'];
+$places = [];
 
 
 // when a client sends data to the server
@@ -36,6 +37,9 @@ function wsOnMessage($clientId, $message, $messageLength, $binary) {
             break;
         case "newName":
             newName($clientId, $data->content);
+            break;
+        case "dead":
+            dead($data->content);
             break;
 	}	
 }
@@ -72,6 +76,52 @@ function newName($clientId, $data){
     $color = $colors[sizeof($players)-1];
 
     broadcast($clientId, 'newPlayerConnected', ['clientId' => $clientId, 'spawn' => $spawn, 'color' => $color, 'username' => $data->username]);
+}
+
+function dead($data){
+    global $places, $players;
+
+    array_push($places, $data->username);
+
+    //check if game over
+    if (sizeof($places) == sizeof($players)-1){
+        echo "GAME OVER";
+
+        for ($i = 0; $i < sizeof($players); $i++){
+            echo $players[$i]['username'];
+            echo $places[0];
+            if (!in_array($players[$i]['username'], $places)){
+                array_push($places, $players[$i]['username']);
+            }
+        }
+        if (sizeof($places) != sizeof($players)){
+            array_push($places, "Guest");
+        }
+
+        //db entry
+        //db
+        $username="root";
+        $database="masterprojekt";
+
+        mysql_connect('localhost',$username, "");
+        mysql_select_db($database);
+
+        $result = mysql_query("SELECT max(id) FROM game");
+
+        $row = mysql_fetch_array($result);
+
+        if ($row[0]){
+            echo "bin drin";
+            for ($i = 0; $i < sizeof($places); $i++){
+                echo $i;
+                $query = "INSERT INTO game VALUES(NULL, '". ($row[0]+1) . "', '". $places[$i] . "', '". (sizeof($places)-$i) . "')";
+                mysql_query($query);
+            }
+        }
+
+        // send game over
+
+    }
 }
 
 // when a client connects
