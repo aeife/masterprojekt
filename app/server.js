@@ -1,8 +1,12 @@
 
-/**
- * Module dependencies.
+/*
+ * # server.js
+ *
+ * Serverseitige Umsetzung mittels node.js
+ * Enthält Webserver mittels Express und Socket-Server mittels socket.io
  */
 
+// Definition von Modulabhängigkeiten (siehe auch package.json)
 var express = require('express')
     , routes = require('./routes')
     , user = require('./routes/user')
@@ -12,8 +16,11 @@ var express = require('express')
     , http = require('http')
     , path = require('path');
 
+
+// Initialisierung einer Express-Applikation
 var app = express();
 
+// Konfiguration
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
@@ -28,10 +35,13 @@ app.configure(function(){
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
+// Konfiguration für Entwicklungsbetrieb
 app.configure('development', function(){
     app.use(express.errorHandler());
 });
 
+
+// Definition von Routen
 app.get('/', routes.index);
 app.get('/game', game.game);
 app.get('/users', user.list);
@@ -41,11 +51,15 @@ app.get('/score', score.list);
 app.get('/score/players', score.players);
 app.get('/score/:id', score.details);
 
+// Initialisierung des Webservers
 var server = app.listen(app.get('port'), '192.168.1.196', function(){
     console.log("Express server listening on port " + app.get('port'));
 });
 
+// Initialisierung des Socket-Servers
 var io = require('socket.io').listen(server);
+
+// Initialisierung von globalen Variablen
 var players = [];
 var gridSize = 50;
 var spawns = [];
@@ -57,11 +71,23 @@ var colors = ['blue', 'red', 'green', 'pink'];
 var places = [];
 
 
+/*
+ * ## io.sockets.on('connection')
+ *
+ * Handhabung der Socketverbindungen ab Connection-Event
+ *
+ * @param {object} socket Datenobjekt der Callback-Funktion zur Handhabung eingegangener Socketverbindungen
+ */
 io.sockets.on('connection', function(socket){
+
+    // ID des gerade verbundenen Clients
     var clientId = socket.id;
+
+    // Daten für neuen Client
     var spawn = {x: spawns[players.length].x, y: spawns[players.length].y, direction: spawns[players.length].direction};
     var color = colors[players.length];
 
+    // Der 1. verbundene Client übernimmt die Rolle des Hosts.
     if (players.length === 0)
         var host = true;
     else 
@@ -72,11 +98,20 @@ io.sockets.on('connection', function(socket){
     
     var connectionData = {clientId: clientId, players: players, spawn: spawn, gridSize: gridSize};
 
+    // Übermittlung der eigenen Daten an den Client 
     socket.emit('successfulConnected', connectionData); 
 
+
+    /*
+     * ## socket.on('startGame')
+     *
+     * Startet das Spiel und übermittelt Startinformation an alle Spieler
+     */
     socket.on("startGame", function(){
         io.sockets.emit('playerStartedGame');
 /*
+    ## auskommentierte Variante ohne Host
+
         setInterval(function(){
             var x = Math.floor(Math.random() * (gridSize-1));
             var y = Math.floor(Math.random() * (gridSize-1));
@@ -91,6 +126,11 @@ io.sockets.on('connection', function(socket){
 */
     });
 
+     /*
+     * ## socket.on('getNewFoodCoordinates')
+     *
+     * Erzeugen und Übermitteln (an alle Spieler) neuer Futter-Koordinaten
+     */
     socket.on("getNewFoodCoordinates", function(){
         var x = Math.floor(Math.random() * (gridSize-1));
         var y = Math.floor(Math.random() * (gridSize-1));
@@ -98,15 +138,35 @@ io.sockets.on('connection', function(socket){
         io.sockets.emit('newFoodCoordinates', {x: x, y: y});
     });
 
+     /*
+     * ## socket.on('getMovePlayers')
+     *
+     * Server hat Bewegungsbefehl von Host erhalten und übermittelt dies an alle Spieler
+     */
     socket.on("getMovePlayers", function(){
         io.sockets.emit('movePlayers'); 
     });
 
+     /*
+     * ## socket.on('newDirection')
+     *
+     * Spieler hat Richtungsänderung gesendet
+     * Weiterleitung der Information an alle Clients
+     *
+     * @param {object} data Datenobjekt der Callback-Funktion mit Informationen zum Client und dessen Richtungsänderung
+     */
     socket.on("newDirection", function(data){
         console.log("NEW DIRECTION FROM: " + socket.id);
         io.sockets.emit('playerSentNewDirection', {clientId: socket.id, direction: data.direction});
     });
 
+    /*
+     * ## socket.on('newName')
+     *
+     * Erst wenn ein neuer Client seinen Nutzernamen gesendet hat, werden seine Verbindungsinformationen an alle anderen Spieler gesendet.
+     * 
+     * @param {object} data Datenobjekt der Callback-Funktion mit Nutzername des Clients
+     */
     socket.on("newName", function(data){
         console.log("NEW NAME FROM: " + socket.id);
 
@@ -123,13 +183,21 @@ io.sockets.on('connection', function(socket){
         socket.broadcast.emit('newPlayerConnected', {clientId: clientId, spawn: spawn, color: color, username: data.username});
     });
 
+    /*
+     * ## socket.on('dead')
+     *
+     * Spieler sendet seinen Tod an den Server
+     *
+     * @param {object} data Datenobjekt der Callback-Funktion mit allen Informationen des gestorbenen Clients
+     */
     socket.on("dead", function(data){
         places.push(data.username);
 
-        //check if game over
+        // Prüfe, ob das Spiel beendet ist
+        // Beendigungsbedingung: nur noch ein lebender Spieler
         if (places.length === players.length-1){
             console.log("GAME OVER");
-            //game over
+            
             for (var i = 0; i < players.length; i++){
                 var isDead = false;
                 for (var j = 0; j < places.length; j++){
@@ -146,18 +214,18 @@ io.sockets.on('connection', function(socket){
                 places.push("Guest");
             }
 
-            //db
-            //require database connection
+
+            // Aufbau der Datenbankverbindung
             var db = require('./database.js');
 
-            //init database
             db.init(function(err, db) {
                 if(err) throw err;
 
-                //select table of db
                 var collection = db.collection('game');
                 var newGameId = 0;
 
+                // Finden der nächsten Spiel-ID
+                // Einfügen des Endstands des aktuellen Spiels unter neuer Spiel-ID
                 collection.findOne({}, {'sort': {id: -1}} , function (err, games){
                     if(err) throw err;
                     
@@ -170,7 +238,7 @@ io.sockets.on('connection', function(socket){
                         }
                     }
 
-                //sendGameOver
+                // Übermittlung des Spielendes an alle Spieler
                 io.sockets.emit('gameOver', {gameId: games.id+1});
 
                 });
@@ -183,9 +251,18 @@ io.sockets.on('connection', function(socket){
         console.log(places);
     });
 
+    /*
+     * ## socket.on('disconnect')
+     *
+     * Verbindung zu einem Spieler ist abgebrochen
+     *
+     * @param {object} data Datenobjekt der Callback-Funktion mit Informationen zum Client, welcher die Verbindung abgebrochen hat
+     */
     socket.on("disconnect", function(data){
+        // Übermittlung, dass ein Client das Spiel verlassen hat, an alle anderen Spieler
         socket.broadcast.emit('playerDisconnected', {clientId: socket.id});
 
+        // Entfernen des Spielers aus dem allgemeinen Spielerfeld
         for (var i=0; i<players.length; i++){
             if (players[i].clientId === socket.id) {
                 var client = players[i];
