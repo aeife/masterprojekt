@@ -109,8 +109,6 @@ io.sockets.on('connection', function(socket){
      */
     socket.on("startGame", function(){
         io.sockets.emit('playerStartedGame');
-/*
-    ## auskommentierte Variante ohne Host
 
         setInterval(function(){
             var x = Math.floor(Math.random() * (gridSize-1));
@@ -123,7 +121,7 @@ io.sockets.on('connection', function(socket){
             io.sockets.emit('movePlayers'); 
         }, 50);
 
-*/
+
     });
 
      /*
