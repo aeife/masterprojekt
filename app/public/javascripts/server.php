@@ -1,11 +1,20 @@
 <?php
-// prevent the server from timing out
+/*
+ * # server.php
+ *
+ * Serverseitige Umsetzung mittels PHP
+ * Enthält nur SocketServer
+ * Aufruf mittels: php.exe server.php
+ */
+
+// Timeout des Servers verhindern
 set_time_limit(0);
 
-// include the web sockets server script (the server is started at the far bottom of this file)
+// Einfügen von Socket-Klasse für Socketfunktionalitäten in PHP
 require 'class.PHPWebSocket.php';
 
 
+// Initialisierung von globalen Variablen
 $players = [];
 $gridSize = 50;
 $spawns = [];
@@ -17,7 +26,18 @@ $colors = ['blue', 'red', 'green', 'pink'];
 $places = [];
 
 
-// when a client sends data to the server
+/*
+ * ## wsOnMessage
+ *
+ * Handhabung der Socketverbindungen ab Connection-Event
+ * 
+ * Je nach übermittelter Nachricht wird die Funktionalität weiterdelegiert.
+ *
+ * @param {int} clientId ID des Clients
+ * @param {string} message Übermittelte Nachricht
+ * @param {int} messageLength Länge der Nachricht
+ * @param {binary} binary Nachricht in Binärformat
+ */
 function wsOnMessage($clientId, $message, $messageLength, $binary) {
 	global $Server;
 	$data = json_decode($message);
@@ -44,10 +64,22 @@ function wsOnMessage($clientId, $message, $messageLength, $binary) {
 	}	
 }
 
+/*
+ * ## startGame
+ *
+ * Startet das Spiel und übermittelt Startinformation an alle Spieler
+ * 
+ */
 function startGame(){
 	emitAll('playerStartedGame', []);
 }
 
+/*
+ * ## getNewFoodCoordinates
+ *
+ * Erzeugen und Übermitteln (an alle Spieler) neuer Futter-Koordinaten
+ * 
+ */
 function getNewFoodCoordinates(){
     global $gridSize;
 
@@ -56,14 +88,36 @@ function getNewFoodCoordinates(){
     emitAll('newFoodCoordinates', ['x' => $x, 'y' => $y]);
 }
 
+ /*
+ * ## getMovePlayers
+ *
+ * Server hat Bewegungsbefehl von Host erhalten und übermittelt dies an alle Spieler
+ */
 function getMovePlayers(){
     emitAll('movePlayers', []);
 }
 
+ /*
+ * ## newDirection
+ *
+ * Spieler hat Richtungsänderung gesendet
+ * Weiterleitung der Information an alle Clients
+ *
+ * @param {int} clientId ID des betroffenen Clients
+ * @param {object} data Datenobjekt mit Informationen zum Client und dessen Richtungsänderung
+ */
 function newDirection($clientId, $data){
     emitAll('playerSentNewDirection', ['clientId' => $clientId, 'direction' => $data->direction]);
 }
 
+/*
+ * ## newName
+ *
+ * Erst wenn ein neuer Client seinen Nutzernamen gesendet hat, werden seine Verbindungsinformationen an alle anderen Spieler gesendet.
+ * 
+ * @param {int} clientId ID des betroffenen Clients
+ * @param {object} data Datenobjekt mit Nutzername des Clients
+ */
 function newName($clientId, $data){
     global $spawns, $colors, $players;
     for ($i = 0; $i < sizeof($players); $i++) {
@@ -78,12 +132,20 @@ function newName($clientId, $data){
     broadcast($clientId, 'newPlayerConnected', ['clientId' => $clientId, 'spawn' => $spawn, 'color' => $color, 'username' => $data->username]);
 }
 
+/*
+ * ## dead
+ *
+ * Spieler sendet seinen Tod an den Server
+ *
+ * @param {object} data Datenobjekt mit allen Informationen des gestorbenen Clients
+ */
 function dead($data){
     global $places, $players;
 
     array_push($places, $data->username);
 
-    //check if game over
+    // Prüfe, ob das Spiel beendet ist
+    // Beendigungsbedingung: nur noch ein lebender Spieler
     if (sizeof($places) == sizeof($players)-1){
         echo "GAME OVER";
 
@@ -98,16 +160,16 @@ function dead($data){
             array_push($places, "Guest");
         }
 
-        //db entry
-        //db
+        // Aufbau der Datenbankverbindung
         $username="root";
         $database="masterprojekt";
 
         mysql_connect('localhost',$username, "");
         mysql_select_db($database);
 
+        // Finden der nächsten Spiel-ID
+        // Einfügen des Endstands des aktuellen Spiels unter neuer Spiel-ID
         $result = mysql_query("SELECT max(id) FROM game");
-
         $row = mysql_fetch_array($result);
 
         if ($row[0]){
@@ -119,7 +181,9 @@ function dead($data){
             }
         }
 
-        // send game over
+        // Übermittlung des Spielendes an alle Spieler
+
+        // @TODO Übermittlung hinzufügen
 
     }
 }
@@ -143,25 +207,16 @@ function wsOnOpen($clientId)
 
 	emit($clientId, 'successfulConnected', $connectionData);
 	
-
-
-/*
-   socket.on("disconnect", function(data){
-        socket.broadcast.emit('playerDisconnected', {clientId: socket.id});
-
-        for (var i=0; i<players.length; i++){
-            if (players[i].idNr === socket.id) {
-                var client = players[i];
-                break;
-            }
-        }
-
-        players.splice(players.indexOf(client), 1);
-    });
-*/
 }
 
-// when a client closes or lost connection
+/*
+ * ## wsOnClose
+ *
+ * Verbindung zu einem Spieler ist abgebrochen
+ *
+ * @param {int} clientId ID des betroffenen Clients
+ * @param {object} status Close-Status des Clients
+ */
 function wsOnClose($clientId, $status) {
     global $Server, $players;
     broadcast($clientId, 'playerDisconnected', ['clientId' => $clientId]);
@@ -175,6 +230,16 @@ function wsOnClose($clientId, $status) {
     array_splice($players, $i, 1);
 }
 
+
+/*
+ * ## emit
+ *
+ * Senden einer Nachricht an einen bestimmten Client
+ *
+ * @param {int} clientId ID des Clients, an welchen die Nachricht übermittelt werden soll
+ * @param {string} event_name Name des Events
+ * @param {object} data Datenobjekt mit zu übermittelten Informationen
+ */
 function emit($clientId, $event_name, $data){
 	global $Server;
 
@@ -184,6 +249,14 @@ function emit($clientId, $event_name, $data){
 	
 }
 
+/*
+ * ## emitAll
+ *
+ * Senden einer Nachricht an alle Clients
+ *
+ * @param {string} event_name Name des Events
+ * @param {object} data Datenobjekt mit zu übermittelten Informationen
+ */
 function emitAll($event_name, $data){
     //var_dump($data);
 	global $Server;
@@ -195,6 +268,15 @@ function emitAll($event_name, $data){
 	}
 }
 
+/*
+ * ## broadcast
+ *
+ * Senden einer Nachricht an alle anderen Clients, außer des eigenen
+ *
+ * @param {int} clientId ID des Clients, an welchen die Nachricht nicht übermittelt werden soll
+ * @param {string} event_name Name des Events
+ * @param {object} data Datenobjekt mit zu übermittelten Informationen
+ */
 function broadcast($clientId, $event_name, $data){
 	global $Server;
 
@@ -210,13 +292,14 @@ function broadcast($clientId, $event_name, $data){
 
 
 
-// start the server
+// Starten des Socket-Servers
 $Server = new PHPWebSocket();
+
+// Socketevents mit Funktionen verbinden
 $Server->bind('message', 'wsOnMessage');
 $Server->bind('open', 'wsOnOpen');
 $Server->bind('close', 'wsOnClose');
-// for other computers to connect, you will probably need to change this to your LAN IP or external IP,
-// alternatively use: gethostbyaddr(gethostbyname($_SERVER['SERVER_NAME']))
+
 $Server->wsStartServer('127.0.0.1', 9300);
 
 ?>

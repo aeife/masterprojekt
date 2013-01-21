@@ -1,3 +1,12 @@
+/*
+ * # fancywebsocket.js
+ *
+ * Frontendfunktionalitäten für Sockethandhabung mit PHP-Server.
+ * Die Funktionalitäten sind so geschrieben, dass sie mit socket.io-Funktionen übereinstimmen. Somit kann das Frontend einheitlich die selben Funktionsnamen nutzen.
+ *
+ * auf Grundlage von: https://github.com/Flynsarmy/PHPWebSocket-Chat
+ */
+
 var FancyWebSocket = function(url)
 {
 	var callbacks = {};
@@ -6,13 +15,9 @@ var FancyWebSocket = function(url)
 	var conn;
 
 	this.on = function(event_name, callback){
-		//console.log("ON");
-		//console.log(callbacks);
 		callbacks[event_name] = callbacks[event_name] || [];
 		callbacks[event_name].push(callback);
-		//callbacks['message'][1] = event_name;
-		//console.log(callback);
-		return this;// chainable
+		return this;
 	};
 
 	this.emit = function(event_name, event_data){
@@ -28,7 +33,6 @@ var FancyWebSocket = function(url)
 		else
 			this.conn = new WebSocket(url);
 
-		// dispatch to the right handlers
 		this.conn.onmessage = function(evt){
 			console.log(evt.data);
 			var data = JSON.parse(evt.data);
@@ -45,16 +49,15 @@ var FancyWebSocket = function(url)
 	};
 
 	var dispatch = function(event_name, message){
-		//console.log("DISPATCH");
-		//console.log(callbacks);
 		var chain = callbacks[event_name];
-		if(typeof chain == 'undefined') return; // no callbacks for this event
+		if(typeof chain == 'undefined') return;
 		for(var i = 0; i < chain.length; i++){
 			chain[i]( message )
 		}
 	}
 };
 
+// Verbindung des Frontends mit entsprechenden PHP-Socket-Server
 var socket;
 socket = new FancyWebSocket('ws://127.0.0.1:9300');
 socket.connect();
