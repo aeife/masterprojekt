@@ -5,6 +5,8 @@
     <body>
         <% if( error == 'password' ){ %>
             <p> Not the same password!</p>
+         <% } else if (error == 'passwordLength'){ %>
+            <p> Password too short (at least 5 chars)!</p>
          <% } else if (error == 'username'){ %>
             <p> Username already exists!</p>
          <% } %>

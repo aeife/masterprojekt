@@ -6,6 +6,9 @@ exports.register = function(req, res){
     if (req.body.password != req.body.passwordRepeat){
         // Prüfe, ob eingegebene Passwörter gleich sind
        res.render('register', {error: "password"}); 
+    } else if (req.body.password.length < 5){
+        // Prüfe, ob Password Mindestlänge erfüllt
+       res.render('register', {error: "passwordLength"});
     } else {
         // Prüfe ob gewählter Nutzername schon vorhanden ist
 
