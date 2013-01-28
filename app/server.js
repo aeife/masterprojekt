@@ -11,6 +11,7 @@ var express = require('express')
     , routes = require('./routes')
     , user = require('./routes/user')
     , login = require('./routes/login')
+    , register = require('./routes/register')
     , score = require('./routes/score')
     , game = require('./routes/game')
     , http = require('http')
@@ -47,6 +48,8 @@ app.get('/game', game.game);
 app.get('/users', user.list);
 app.get('/login', login.form);
 app.post('/login', login.auth);
+app.get('/register', register.form);
+app.post('/register', register.register);
 app.get('/score', score.list);
 app.get('/score/players', score.players);
 app.get('/score/:id', score.details);
