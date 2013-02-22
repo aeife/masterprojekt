@@ -55,6 +55,23 @@ document.onkeydown = function(e) {
 function start(){
     console.log("START");
     console.log(player.host);
+
+
+     // Nur für die PHP Variante:
+     // Der Host initialisiert die Intervalle für Essen und Bewegung
+    if (window.io === undefined && player.host){
+        console.log("ICH BIN HOST!");
+
+        // Intervall zur Generierung von Essen
+        var foodInterval = setInterval(function(){
+            socket.emit('getNewFoodCoordinates'); 
+        }, 1000);
+
+        // Intervall für regelmäßige Bewegungsbefehle
+        var moveInterval = setInterval(function(){
+            socket.emit('getMovePlayers');
+        }, 50);
+    }
 }
 
 /*
