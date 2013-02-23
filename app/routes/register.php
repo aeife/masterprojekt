@@ -32,7 +32,7 @@
             } else {
                 mysql_query("INSERT INTO user VALUES(NULL, '". $username . "', '". md5($password) . "')");
 
-                 header( 'Location: login.php' ) ;
+                 header( 'Location: login' ) ;
             }
         }
     }

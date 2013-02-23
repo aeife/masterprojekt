@@ -19,7 +19,7 @@
         if ($password == $row['password']){
             $_SESSION['username'] = $row['name'];
 
-            header( 'Location: game.php' ) ;
+            header( 'Location: game' ) ;
         } else {
             echo "error";
         }
