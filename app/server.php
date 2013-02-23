@@ -183,13 +183,16 @@ function dead($data){
 
         // Übermittlung des Spielendes an alle Spieler
         emitAll('gameOver', ['gameId' => $row[0]+1]);
-
-        // @TODO Übermittlung hinzufügen
-
     }
 }
 
-// when a client connects
+/*
+ * ## wsOnOpen
+ *
+ * Verbindung zu einem neuen Spieler hergestellt
+ *
+ * @param {int} clientId ID des neuen Clients
+ */
 function wsOnOpen($clientId)
 {
 	global $Server, $players, $gridSize, $spawns, $colors;
