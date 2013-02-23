@@ -1,0 +1,22 @@
+extends main
+
+block head
+    script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+        
+
+block body
+    canvas(id="canvas"
+            width="5000"
+            height="5000")
+
+    script
+        if (("#{username}" != '')){
+            console.log("GOT NAME");
+            var username = "#{username}";
+        }
+
+
+    script(src="/socket.io/socket.io.js")
+    script(src="/javascripts/level.js")
+    script(src="/javascripts/player.js")
+    script(src="/javascripts/app.js")

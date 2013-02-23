@@ -1,0 +1,23 @@
+extends main
+
+block body
+    - if( error == 'password' )
+        p
+            Not the same password!
+    - else if (error == 'passwordLength')
+        p
+            Password too short (at least 5 chars)!
+    - else if (error == 'username')
+        p
+            Username already exists!
+
+    form(action="/register", method="post")
+        label(for="name") Name: 
+        input(type="text", name="name")
+        br
+        label(for="password") Password:
+        input(type="password", name="password")
+        br
+        label(for="passwordRepeat") Repeat Password: 
+        input(type="password", name="passwordRepeat")
+        input(type="submit", value="Submit")

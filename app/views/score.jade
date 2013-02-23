@@ -1,0 +1,7 @@
+extends main
+
+block body
+    ul
+        each nr in games
+            li
+                a(href = '/score/' + nr) Game #{nr}

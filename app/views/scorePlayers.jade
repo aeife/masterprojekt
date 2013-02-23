@@ -1,0 +1,8 @@
+extends main
+
+block body
+    ol
+        script
+            console.log(players);
+        each player in players
+            li #{player.username} #{player.score}
