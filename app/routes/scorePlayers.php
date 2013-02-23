@@ -36,14 +36,7 @@
         return $new_array;
     }
 
-    include('../smarty/Smarty.class.php');
-    $smarty = new Smarty;
-
-    $username="root";
-    $database="masterprojekt";
-
-    mysql_connect('localhost',$username, "");
-    mysql_select_db($database);
+    include('../database.php');
 
     $result = mysql_query("SELECT distinct(username) FROM game ORDER BY username");
     $users = [];
@@ -84,6 +77,7 @@
 
     array_sort($users, "score", SORT_DESC);
 
+    include('../smarty/Smarty.class.php');
     $smarty = new Smarty();
     $smarty->assign('list', $users);
     $smarty->display('../views/scorePlayers.tpl');

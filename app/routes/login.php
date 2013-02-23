@@ -5,12 +5,7 @@
         $name = $_POST['name'];
         $password = md5($_POST['password']);
 
-        //db
-        $username="root";
-        $database="masterprojekt";
-
-        mysql_connect('localhost',$username, "");
-        mysql_select_db($database);
+        include('../database.php');
 
         $result = mysql_query("SELECT * FROM user WHERE name = '" . $name . "'");
 

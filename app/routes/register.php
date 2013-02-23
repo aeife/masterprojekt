@@ -1,7 +1,4 @@
-<?php 
-    include('../smarty/Smarty.class.php');
-    $smarty = new Smarty;
-
+<?php
     $error = "";
 
     if (isset($_POST["name"])) {
@@ -16,12 +13,7 @@
         } else {
             // Prüfe ob Nutzername bereits vorhanden
 
-            //db
-            $dbUsername="root";
-            $database="masterprojekt";
-
-            mysql_connect('localhost',$dbUsername, "");
-            mysql_select_db($database);
+            include('../database.php');
 
             $result = mysql_query("SELECT * FROM user WHERE name = '" . $username . "'");
 
@@ -37,6 +29,7 @@
         }
     }
 
+    include('../smarty/Smarty.class.php');
     $smarty = new Smarty();
     $smarty->assign('error', $error);
     $smarty->display('../views/register.tpl');

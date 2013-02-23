@@ -161,11 +161,7 @@ function dead($data){
         }
 
         // Aufbau der Datenbankverbindung
-        $username="root";
-        $database="masterprojekt";
-
-        mysql_connect('localhost',$username, "");
-        mysql_select_db($database);
+        include('database.php');
 
         // Finden der nächsten Spiel-ID
         // Einfügen des Endstands des aktuellen Spiels unter neuer Spiel-ID
