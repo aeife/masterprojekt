@@ -1,41 +1,4 @@
 <?php
-
-    function array_sort($array, $on, $order=SORT_ASC)
-    {
-        //source: http://php.net/manual/de/function.sort.php
-        $new_array = array();
-        $sortable_array = array();
-
-        if (count($array) > 0) {
-            foreach ($array as $k => $v) {
-                if (is_array($v)) {
-                    foreach ($v as $k2 => $v2) {
-                        if ($k2 == $on) {
-                            $sortable_array[$k] = $v2;
-                        }
-                    }
-                } else {
-                    $sortable_array[$k] = $v;
-                }
-            }
-
-            switch ($order) {
-                case SORT_ASC:
-                    asort($sortable_array);
-                break;
-                case SORT_DESC:
-                    arsort($sortable_array);
-                break;
-            }
-
-            foreach ($sortable_array as $k => $v) {
-                $new_array[$k] = $array[$k];
-            }
-        }
-
-        return $new_array;
-    }
-
     include('../database.php');
 
     $result = mysql_query("SELECT distinct(username) FROM game ORDER BY username");
@@ -74,8 +37,11 @@
             $j++;
         }
     }
+    
+    usort($users, function($a, $b) {
 
-    array_sort($users, "score", SORT_DESC);
+        return $b['score'] - $a['score'];
+    });
 
     include('../smarty/Smarty.class.php');
     $smarty = new Smarty();
