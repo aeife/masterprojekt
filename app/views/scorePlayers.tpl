@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
-    </head>
-    <body>
-   
+{extends file='./main.tpl'}
 
-        <ol>
-            {foreach from=$list item=row}
-                <li>{$row["username"]} {$row["score"]}</li>
-            {/foreach}
-        </ol>
-    </body>
-</html>
+{block name=body}
+     <ol>
+        {foreach from=$list item=row}
+            <li>{$row["username"]} {$row["score"]}</li>
+        {/foreach}
+    </ol>
+{/block}
