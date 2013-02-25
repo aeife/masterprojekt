@@ -14,7 +14,7 @@
         if ($password == $row['password']){
             $_SESSION['username'] = $row['name'];
 
-            header( 'Location: /' ) ;
+            header( 'Location: /' );
         } else {
             echo "error";
         }
