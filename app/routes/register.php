@@ -1,4 +1,5 @@
 <?php
+    session_start();
     $error = "";
 
     if (isset($_POST["name"])) {
@@ -24,7 +25,7 @@
             } else {
                 mysql_query("INSERT INTO user VALUES(NULL, '". $username . "', '". md5($password) . "')");
 
-                 header( 'Location: login' ) ;
+                 header( 'Location: /' ) ;
             }
         }
     }

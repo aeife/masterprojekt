@@ -4,6 +4,10 @@
         {block name=head}{/block}
     </head>
     <body>
-       {block name=body}{/block}
+        {include file='../views/menu.tpl'}
+        <br/>
+        {include file='../views/login.tpl'}
+        <br/>
+        {block name=body}{/block}
     </body>
 </html>

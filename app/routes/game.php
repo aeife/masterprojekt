@@ -5,6 +5,7 @@
 
     include('../smarty/Smarty.class.php');
     $smarty = new Smarty();
-    $smarty->assign('username', $username);
+    if (isset($username))
+        $smarty->assign('username', $username);
     $smarty->display('../views/game.tpl');
 ?>

@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include('../database.php');
 
     $result = mysql_query("SELECT distinct(username) FROM game ORDER BY username");
