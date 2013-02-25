@@ -1,14 +1,14 @@
 exports.form = function(req, res){
-    res.render('register', {error: null});
+    res.render('register', {error: null, username: req.session.username});
 };
 
 exports.register = function(req, res){
     if (req.body.password != req.body.passwordRepeat){
         // Prüfe, ob eingegebene Passwörter gleich sind
-       res.render('register', {error: "password"}); 
+       res.render('register', {error: "password", username: req.session.username}); 
     } else if (req.body.password.length < 5){
         // Prüfe, ob Password Mindestlänge erfüllt
-       res.render('register', {error: "passwordLength"});
+       res.render('register', {error: "passwordLength", username: req.session.username});
     } else {
         // Prüfe ob gewählter Nutzername schon vorhanden ist
 
@@ -34,12 +34,12 @@ exports.register = function(req, res){
                 //if user is found, write username in session
                 if (users){
                     // Nutzername bereits vorhanden
-                    res.render('register', {error: "username"}); 
+                    res.render('register', {error: "username", username: req.session.username}); 
                 } else {
                     // Füge einen neuen Nutzer hinzu
                     collection.insert({username: username, password: password}, {w:1}, function(err, result) {
                         if (err) throw err;
-                        res.redirect('/login');
+                        res.redirect('/');
                     });
                 }
             });

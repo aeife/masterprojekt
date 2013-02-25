@@ -1,6 +1,6 @@
-extends main
-
-block body
+if locals.username
+    p Logged in as: #{username}
+else
     form(action="/login",method="post")
         label(for="name") Name:
         input(type="text", name="name")

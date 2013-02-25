@@ -18,7 +18,7 @@ exports.list = function(req, res){
             //if user is found, write username in session
             if (games){
                 console.log(games);
-                res.render('score', { title: 'Express', games: games});
+                res.render('score', { title: 'Express', games: games, username: req.session.username});
             }
 
         });
@@ -46,7 +46,7 @@ exports.details = function(req, res){
             //if user is found, write username in session
             if (items){
                 console.log(items);
-                res.render('scoreDetails', { title: 'Express', games: items});
+                res.render('scoreDetails', { title: 'Express', games: items, username: req.session.username});
             }
         });
 
@@ -112,7 +112,7 @@ exports.players = function(req, res){
                             return 0;
                         });
                         
-                        res.render('scorePlayers', { title: 'Express', players: players});
+                        res.render('scorePlayers', { title: 'Express', players: players, username: req.session.username});
                     }
                 });
 
