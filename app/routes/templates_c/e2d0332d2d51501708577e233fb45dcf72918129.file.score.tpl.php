@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-25 13:39:15
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-26 10:37:19
          compiled from "..\views\score.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1593351276a77891438-03269106%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -13,7 +13,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '96909e926ac391f92a72641495c68867f1efd560' => 
     array (
       0 => 'C:\\xampp\\htdocs\\git\\masterprojekt\\app\\views\\main.tpl',
-      1 => 1361795717,
+      1 => 1361796832,
       2 => 'file',
     ),
   ),
@@ -33,8 +33,10 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     <body>
         <?php echo $_smarty_tpl->getSubTemplate ('../views/menu.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
+        <br/>
         <?php echo $_smarty_tpl->getSubTemplate ('../views/login.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
+        <br/>
         
     <h1>SCORE</h1>
     <ul>

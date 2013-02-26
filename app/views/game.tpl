@@ -12,7 +12,7 @@
         {/if}
     </script>
 
-    <canvas id="canvas" width="5000" height="5000"></canvas>
+    <canvas id="canvas" width="500" height="500"></canvas>
 
     <script src="../public/javascripts/fancywebsocket.js"></script>
     <script src="../public/javascripts/level.js" type="text/javascript"></script>

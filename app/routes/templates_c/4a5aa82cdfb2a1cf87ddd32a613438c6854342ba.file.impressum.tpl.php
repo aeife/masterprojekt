@@ -1,13 +1,13 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-26 11:03:22
-         compiled from "..\views\index.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:805151277293b48de8-15860945%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-26 11:03:24
+         compiled from "..\views\impressum.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:8483512c886c526103-39398152%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
-    '8eadb240e3fe59b96b0486d0f1203cdec08347ec' => 
+    '4a5aa82cdfb2a1cf87ddd32a613438c6854342ba' => 
     array (
-      0 => '..\\views\\index.tpl',
-      1 => 1361795279,
+      0 => '..\\views\\impressum.tpl',
+      1 => 1361872984,
       2 => 'file',
     ),
     '96909e926ac391f92a72641495c68867f1efd560' => 
@@ -17,15 +17,15 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '805151277293b48de8-15860945',
+  'nocache_hash' => '8483512c886c526103-39398152',
   'function' => 
   array (
   ),
-  'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_51277293b6d265_12722697',
   'has_nocache_code' => false,
+  'version' => 'Smarty-3.1.13',
+  'unifunc' => 'content_512c886c560b34_97757764',
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_51277293b6d265_12722697')) {function content_51277293b6d265_12722697($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<?php if ($_valid && !is_callable('content_512c886c560b34_97757764')) {function content_512c886c560b34_97757764($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title>Snake</title>
@@ -51,7 +51,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <!-- Content -->
 <div id="bg_content">
 
-    Awesome Game!
+    Impressum!
 
 
 
