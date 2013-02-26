@@ -1,12 +1,11 @@
 if locals.username
     p Logged in as: #{username}
-    a(href="logout") Logout
+    a(href="logout") 
+        input(type="button", class="button", value="Logout")
 else
     form(action="/login",method="post")
         label(for="name") Name:
         input(type="text", name="name")
-        br
         label(for="password") Password:
         input(type="password", name="password")
-        br
-        input(type="submit", value="Submit")
+        input(type="submit", class="button", value="Login")

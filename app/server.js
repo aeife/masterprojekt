@@ -15,6 +15,7 @@ var express = require('express')
     , register = require('./routes/register')
     , score = require('./routes/score')
     , game = require('./routes/game')
+    , impressum = require('./routes/impressum')
     , http = require('http')
     , path = require('path');
 
@@ -55,6 +56,7 @@ app.post('/register', register.register);
 app.get('/score', score.list);
 app.get('/score/players', score.players);
 app.get('/score/:id', score.details);
+app.get('/impressum', impressum.impressum);
 
 // Initialisierung des Webservers
 var server = app.listen(app.get('port'), '192.168.1.196', function(){

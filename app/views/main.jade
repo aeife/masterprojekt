@@ -1,8 +1,23 @@
 doctype 5
 html
     head
+        title Snake
+        link(rel="stylesheet"
+            type="text/css"
+            href="stylesheets/style.css")
         block head
     body
-        include menu
-        include login
-        block body
+        div#global
+            div#bg_top
+                div#top_login
+                    include login
+                div#top_menue
+                    include menu
+            div#bg_content
+                block body
+            div#bg_footer
+                div#bg_footer_li
+                    &copy; 2012 - 2013 - 
+                    strong André Eife & Benjamin Teufel
+                div#bg_footer_re
+                    a(href="/impressum") Impressum
