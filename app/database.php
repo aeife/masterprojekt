@@ -1,4 +1,9 @@
 <?php
+    /*
+     * # database.php
+     *
+     * Verbindung zu MySQL inklusive aller notwendigen Verbindungsdaten
+     */
     $dbUsername="root";
     $database="masterprojekt";
 
