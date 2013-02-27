@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>server.php</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../../', thisFile = 'public/javascripts/server.php', defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#server.php">server.php</a>
+      </div>
+      <div class="heading h2">
+        <a href="#wsonmessage">wsOnMessage</a>
+      </div>
+      <div class="heading h2">
+        <a href="#startgame">startGame</a>
+      </div>
+      <div class="heading h2">
+        <a href="#getnewfoodcoordinates">getNewFoodCoordinates</a>
+      </div>
+      <div class="heading h2">
+        <a href="#getmoveplayers">getMovePlayers</a>
+      </div>
+      <div class="heading h2">
+        <a href="#newdirection">newDirection</a>
+      </div>
+      <div class="heading h2">
+        <a href="#newname">newName</a>
+      </div>
+      <div class="heading h2">
+        <a href="#dead">dead</a>
+      </div>
+      <div class="heading h2">
+        <a href="#wsonclose">wsOnClose</a>
+      </div>
+      <div class="heading h2">
+        <a href="#emit">emit</a>
+      </div>
+      <div class="heading h2">
+        <a href="#emitall">emitAll</a>
+      </div>
+      <div class="heading h2">
+        <a href="#broadcast">broadcast</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>server.php</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="cp">&lt;?php</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="server.php">
+  <h1>
+    <a href="#server.php" class="pilcrow">&#182;</a>
+    server.php
+  </h1>
+</div>
+
+  </div>
+  <div class="body"><p>Serverseitige Umsetzung mittels PHP
+Enthält nur SocketServer
+Aufruf mittels: php.exe server.php</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>Timeout des Servers verhindern</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nb">set_time_limit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Einfügen von Socket-Klasse für Socketfunktionalitäten in PHP</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">require</span> <span class="s1">&#39;class.PHPWebSocket.php&#39;</span><span class="p">;</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>Initialisierung von globalen Variablen</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nv">$players</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nv">$gridSize</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="nv">$spawns</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="nv">$spawns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;east&quot;</span><span class="p">];</span>
+<span class="nv">$spawns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;west&quot;</span><span class="p">];</span>
+<span class="nv">$spawns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;south&quot;</span><span class="p">];</span>
+<span class="nv">$spawns</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;north&quot;</span><span class="p">];</span>
+<span class="nv">$colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;pink&#39;</span><span class="p">];</span>
+<span class="nv">$places</span> <span class="o">=</span> <span class="p">[];</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="wsonmessage">
+  <h2>
+    <a href="#wsonmessage" class="pilcrow">&#182;</a>
+    wsOnMessage
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Handhabung der Socketverbindungen ab Connection-Event</p>
+
+<p>Je nach übermittelter Nachricht wird die Funktionalität weiterdelegiert.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">clientId</span>
+      <span class="dox_type">int</span>
+      <span>ID des Clients</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">message</span>
+      <span class="dox_type">string</span>
+      <span>Übermittelte Nachricht</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">messageLength</span>
+      <span class="dox_type">int</span>
+      <span>Länge der Nachricht</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">binary</span>
+      <span class="dox_type">binary</span>
+      <span>Nachricht in Binärformat</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">wsOnMessage</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$message</span><span class="p">,</span> <span class="nv">$messageLength</span><span class="p">,</span> <span class="nv">$binary</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">global</span> <span class="nv">$Server</span><span class="p">;</span>
+  <span class="nv">$data</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$message</span><span class="p">);</span>
+
+  <span class="k">switch</span><span class="p">(</span><span class="nv">$data</span><span class="o">-&gt;</span><span class="na">event_name</span><span class="p">){</span>
+    <span class="k">case</span> <span class="s2">&quot;startGame&quot;</span><span class="o">:</span>
+      <span class="nx">startGame</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s2">&quot;getNewFoodCoordinates&quot;</span><span class="o">:</span>
+            <span class="nx">getNewFoodCoordinates</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s2">&quot;getMovePlayers&quot;</span><span class="o">:</span>
+            <span class="nx">getMovePlayers</span><span class="p">();</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s2">&quot;newDirection&quot;</span><span class="o">:</span>
+            <span class="nx">newDirection</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s2">&quot;newName&quot;</span><span class="o">:</span>
+            <span class="nx">newName</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="s2">&quot;dead&quot;</span><span class="o">:</span>
+            <span class="nx">dead</span><span class="p">(</span><span class="nv">$data</span><span class="o">-&gt;</span><span class="na">content</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span> 
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="startgame">
+  <h2>
+    <a href="#startgame" class="pilcrow">&#182;</a>
+    startGame
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Startet das Spiel und übermittelt Startinformation an alle Spieler</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">startGame</span><span class="p">(){</span>
+  <span class="nx">emitAll</span><span class="p">(</span><span class="s1">&#39;playerStartedGame&#39;</span><span class="p">,</span> <span class="p">[]);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="getnewfoodcoordinates">
+  <h2>
+    <a href="#getnewfoodcoordinates" class="pilcrow">&#182;</a>
+    getNewFoodCoordinates
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Erzeugen und Übermitteln (an alle Spieler) neuer Futter-Koordinaten</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">getNewFoodCoordinates</span><span class="p">(){</span>
+    <span class="k">global</span> <span class="nv">$gridSize</span><span class="p">;</span>
+
+    <span class="nv">$x</span> <span class="o">=</span> <span class="nx">floor</span><span class="p">(</span><span class="nx">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$gridSize</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="nv">$y</span> <span class="o">=</span> <span class="nx">floor</span><span class="p">(</span><span class="nx">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$gridSize</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+    <span class="nx">emitAll</span><span class="p">(</span><span class="s1">&#39;newFoodCoordinates&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="nv">$x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span> <span class="nv">$y</span><span class="p">]);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="getmoveplayers">
+  <h2>
+    <a href="#getmoveplayers" class="pilcrow">&#182;</a>
+    getMovePlayers
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Server hat Bewegungsbefehl von Host erhalten und übermittelt dies an alle Spieler</p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">getMovePlayers</span><span class="p">(){</span>
+    <span class="nx">emitAll</span><span class="p">(</span><span class="s1">&#39;movePlayers&#39;</span><span class="p">,</span> <span class="p">[]);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="newdirection">
+  <h2>
+    <a href="#newdirection" class="pilcrow">&#182;</a>
+    newDirection
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Spieler hat Richtungsänderung gesendet
+Weiterleitung der Information an alle Clients</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">clientId</span>
+      <span class="dox_type">int</span>
+      <span>ID des betroffenen Clients</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data</span>
+      <span class="dox_type">object</span>
+      <span>Datenobjekt mit Informationen zum Client und dessen Richtungsänderung</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">newDirection</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$data</span><span class="p">){</span>
+    <span class="nx">emitAll</span><span class="p">(</span><span class="s1">&#39;playerSentNewDirection&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;clientId&#39;</span> <span class="o">=&gt;</span> <span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">direction</span><span class="p">]);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="newname">
+  <h2>
+    <a href="#newname" class="pilcrow">&#182;</a>
+    newName
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Erst wenn ein neuer Client seinen Nutzernamen gesendet hat, werden seine Verbindungsinformationen an alle anderen Spieler gesendet.</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">clientId</span>
+      <span class="dox_type">int</span>
+      <span>ID des betroffenen Clients</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data</span>
+      <span class="dox_type">object</span>
+      <span>Datenobjekt mit Nutzername des Clients</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">newName</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$data</span><span class="p">){</span>
+    <span class="k">global</span> <span class="nv">$spawns</span><span class="p">,</span> <span class="nv">$colors</span><span class="p">,</span> <span class="nv">$players</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">);</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$players</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;clientId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$clientId</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$players</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">username</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nv">$spawn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawns</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span>  <span class="nv">$spawns</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawns</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;direction&#39;</span><span class="p">]];</span>
+    <span class="nv">$color</span> <span class="o">=</span> <span class="nv">$colors</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+
+    <span class="nx">broadcast</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;newPlayerConnected&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;clientId&#39;</span> <span class="o">=&gt;</span> <span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;spawn&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawn</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span> <span class="o">=&gt;</span> <span class="nv">$color</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">username</span><span class="p">]);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="dead">
+  <h2>
+    <a href="#dead" class="pilcrow">&#182;</a>
+    dead
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Spieler sendet seinen Tod an den Server</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data</span>
+      <span class="dox_type">object</span>
+      <span>Datenobjekt mit allen Informationen des gestorbenen Clients</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">dead</span><span class="p">(</span><span class="nv">$data</span><span class="p">){</span>
+    <span class="k">global</span> <span class="nv">$places</span><span class="p">,</span> <span class="nv">$players</span><span class="p">;</span>
+
+    <span class="nb">array_push</span><span class="p">(</span><span class="nv">$places</span><span class="p">,</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">username</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>Prüfe, ob das Spiel beendet ist
+Beendigungsbedingung: nur noch ein lebender Spieler</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="k">if</span> <span class="p">(</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$places</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="k">echo</span> <span class="s2">&quot;GAME OVER&quot;</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">);</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">echo</span> <span class="nv">$players</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">];</span>
+            <span class="k">echo</span> <span class="nv">$places</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$players</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="nv">$places</span><span class="p">)){</span>
+                <span class="nb">array_push</span><span class="p">(</span><span class="nv">$places</span><span class="p">,</span> <span class="nv">$players</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$places</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)){</span>
+            <span class="nb">array_push</span><span class="p">(</span><span class="nv">$places</span><span class="p">,</span> <span class="s2">&quot;Guest&quot;</span><span class="p">);</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>Aufbau der Datenbankverbindung</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nv">$username</span><span class="o">=</span><span class="s2">&quot;root&quot;</span><span class="p">;</span>
+        <span class="nv">$database</span><span class="o">=</span><span class="s2">&quot;masterprojekt&quot;</span><span class="p">;</span>
+
+        <span class="nb">mysql_connect</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span><span class="nv">$username</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
+        <span class="nb">mysql_select_db</span><span class="p">(</span><span class="nv">$database</span><span class="p">);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>Finden der nächsten Spiel-ID
+Einfügen des Endstands des aktuellen Spiels unter neuer Spiel-ID</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT max(id) FROM game&quot;</span><span class="p">);</span>
+        <span class="nv">$row</span> <span class="o">=</span> <span class="nb">mysql_fetch_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="mi">0</span><span class="p">]){</span>
+            <span class="k">echo</span> <span class="s2">&quot;bin drin&quot;</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$places</span><span class="p">);</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+                <span class="k">echo</span> <span class="nv">$i</span><span class="p">;</span>
+                <span class="nv">$query</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO game VALUES(NULL, &#39;&quot;</span><span class="o">.</span> <span class="p">(</span><span class="nv">$row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span> <span class="nv">$places</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span> <span class="o">.</span> <span class="s2">&quot;&#39;, &#39;&quot;</span><span class="o">.</span> <span class="p">(</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$places</span><span class="p">)</span><span class="o">-</span><span class="nv">$i</span><span class="p">)</span> <span class="o">.</span> <span class="s2">&quot;&#39;)&quot;</span><span class="p">;</span>
+                <span class="nb">mysql_query</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>Übermittlung des Spielendes an alle Spieler</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>        <span class="nx">emitAll</span><span class="p">(</span><span class="s1">&#39;gameOver&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;gameId&#39;</span> <span class="o">=&gt;</span> <span class="nv">$row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>@TODO Übermittlung hinzufügen</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>    <span class="p">}</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>when a client connects</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">wsOnOpen</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">global</span> <span class="nv">$Server</span><span class="p">,</span> <span class="nv">$players</span><span class="p">,</span> <span class="nv">$gridSize</span><span class="p">,</span> <span class="nv">$spawns</span><span class="p">,</span> <span class="nv">$colors</span><span class="p">;</span>
+
+  <span class="nv">$spawn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawns</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)][</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span>  <span class="nv">$spawns</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)][</span><span class="s1">&#39;y&#39;</span><span class="p">],</span> <span class="s1">&#39;direction&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawns</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)][</span><span class="s1">&#39;direction&#39;</span><span class="p">]];</span>
+    <span class="nv">$color</span> <span class="o">=</span> <span class="nv">$colors</span><span class="p">[</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)];</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="nv">$host</span> <span class="o">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="nv">$host</span> <span class="o">=</span> <span class="k">false</span><span class="p">;</span>
+
+  <span class="nb">array_push</span><span class="p">(</span><span class="nv">$players</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;clientId&#39;</span> <span class="o">=&gt;</span> <span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;spawn&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawn</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span> <span class="o">=&gt;</span> <span class="nv">$host</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span> <span class="o">=&gt;</span> <span class="nv">$color</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Guest&#39;</span><span class="p">]);</span>
+
+  <span class="nv">$connectionData</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;clientId&#39;</span> <span class="o">=&gt;</span> <span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;players&#39;</span> <span class="o">=&gt;</span> <span class="nv">$players</span><span class="p">,</span> <span class="s1">&#39;spawn&#39;</span> <span class="o">=&gt;</span> <span class="nv">$spawn</span><span class="p">,</span> <span class="s1">&#39;gridSize&#39;</span> <span class="o">=&gt;</span> <span class="nv">$gridSize</span><span class="p">];</span>
+
+  <span class="nx">emit</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;successfulConnected&#39;</span><span class="p">,</span> <span class="nv">$connectionData</span><span class="p">);</span>
+  
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="wsonclose">
+  <h2>
+    <a href="#wsonclose" class="pilcrow">&#182;</a>
+    wsOnClose
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Verbindung zu einem Spieler ist abgebrochen</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">clientId</span>
+      <span class="dox_type">int</span>
+      <span>ID des betroffenen Clients</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">status</span>
+      <span class="dox_type">object</span>
+      <span>Close-Status des Clients</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">wsOnClose</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$status</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">global</span> <span class="nv">$Server</span><span class="p">,</span> <span class="nv">$players</span><span class="p">;</span>
+    <span class="nx">broadcast</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="s1">&#39;playerDisconnected&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;clientId&#39;</span> <span class="o">=&gt;</span> <span class="nv">$clientId</span><span class="p">]);</span>
+
+
+    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span> <span class="o">&lt;</span> <span class="nb">sizeof</span><span class="p">(</span><span class="nv">$players</span><span class="p">);</span> <span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$players</span><span class="p">[</span><span class="nv">$i</span><span class="p">][</span><span class="s1">&#39;clientId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$clientId</span><span class="p">){</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nb">array_splice</span><span class="p">(</span><span class="nv">$players</span><span class="p">,</span> <span class="nv">$i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="emit">
+  <h2>
+    <a href="#emit" class="pilcrow">&#182;</a>
+    emit
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Senden einer Nachricht an einen bestimmten Client</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">clientId</span>
+      <span class="dox_type">int</span>
+      <span>ID des Clients, an welchen die Nachricht übermittelt werden soll</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">event_name</span>
+      <span class="dox_type">string</span>
+      <span>Name des Events</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data</span>
+      <span class="dox_type">object</span>
+      <span>Datenobjekt mit zu übermittelten Informationen</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">emit</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$event_name</span><span class="p">,</span> <span class="nv">$data</span><span class="p">){</span>
+  <span class="k">global</span> <span class="nv">$Server</span><span class="p">;</span>
+
+  <span class="nv">$newData</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_name&#39;</span> <span class="o">=&gt;</span> <span class="nv">$event_name</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$data</span><span class="p">];</span>
+  <span class="nv">$newData</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$newData</span><span class="p">);</span>
+  <span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">wsSend</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$newData</span><span class="p">);</span>
+  
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="emitall">
+  <h2>
+    <a href="#emitall" class="pilcrow">&#182;</a>
+    emitAll
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Senden einer Nachricht an alle Clients</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">event_name</span>
+      <span class="dox_type">string</span>
+      <span>Name des Events</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data</span>
+      <span class="dox_type">object</span>
+      <span>Datenobjekt mit zu übermittelten Informationen</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">emitAll</span><span class="p">(</span><span class="nv">$event_name</span><span class="p">,</span> <span class="nv">$data</span><span class="p">){</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>var_dump($data);</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>  <span class="k">global</span> <span class="nv">$Server</span><span class="p">;</span>
+
+  <span class="k">foreach</span> <span class="p">(</span> <span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">wsClients</span> <span class="k">as</span> <span class="nv">$id</span> <span class="o">=&gt;</span> <span class="nv">$client</span> <span class="p">){</span>
+    <span class="nv">$newData</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_name&#39;</span> <span class="o">=&gt;</span> <span class="nv">$event_name</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$data</span><span class="p">];</span>
+    <span class="nv">$newData</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$newData</span><span class="p">);</span>
+    <span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">wsSend</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$newData</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="broadcast">
+  <h2>
+    <a href="#broadcast" class="pilcrow">&#182;</a>
+    broadcast
+  </h2>
+</div>
+
+  </div>
+  <div class="body"><p>Senden einer Nachricht an alle anderen Clients, außer des eigenen</p>
+  </div>
+  <div class="details">
+    <div class="dox_tag_title">Params</div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">clientId</span>
+      <span class="dox_type">int</span>
+      <span>ID des Clients, an welchen die Nachricht nicht übermittelt werden soll</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">event_name</span>
+      <span class="dox_type">string</span>
+      <span>Name des Events</span>
+    </div>
+    <div class="dox_tag_detail">
+      <span class="dox_tag_name">data</span>
+      <span class="dox_type">object</span>
+      <span>Datenobjekt mit zu übermittelten Informationen</span>
+    </div>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="k">function</span> <span class="nf">broadcast</span><span class="p">(</span><span class="nv">$clientId</span><span class="p">,</span> <span class="nv">$event_name</span><span class="p">,</span> <span class="nv">$data</span><span class="p">){</span>
+  <span class="k">global</span> <span class="nv">$Server</span><span class="p">;</span>
+
+  <span class="k">foreach</span> <span class="p">(</span> <span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">wsClients</span> <span class="k">as</span> <span class="nv">$id</span> <span class="o">=&gt;</span> <span class="nv">$client</span> <span class="p">){</span>
+
+    <span class="k">if</span> <span class="p">(</span> <span class="nv">$id</span> <span class="o">!=</span> <span class="nv">$clientId</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$newData</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event_name&#39;</span> <span class="o">=&gt;</span> <span class="nv">$event_name</span><span class="p">,</span> <span class="s1">&#39;content&#39;</span> <span class="o">=&gt;</span> <span class="nv">$data</span><span class="p">];</span>
+      <span class="nv">$newData</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$newData</span><span class="p">);</span>
+      <span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">wsSend</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span> <span class="nv">$newData</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>Starten des Socket-Servers</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nv">$Server</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PHPWebSocket</span><span class="p">();</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>Socketevents mit Funktionen verbinden</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="s1">&#39;wsOnMessage&#39;</span><span class="p">);</span>
+<span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;wsOnOpen&#39;</span><span class="p">);</span>
+<span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">bind</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span> <span class="s1">&#39;wsOnClose&#39;</span><span class="p">);</span>
+
+<span class="nv">$Server</span><span class="o">-&gt;</span><span class="na">wsStartServer</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">9300</span><span class="p">);</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

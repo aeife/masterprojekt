@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>fancywebsocket.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../doc-style.css" />
+  <script src="../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = '../../', thisFile = 'public/javascripts/fancywebsocket.js', defaultSidebar = true;
+  </script>
+  <script src="../../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#fancywebsocket.js">fancywebsocket.js</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs"><div class="dox">
+  <div class="summary">
+<div class="pilwrap" id="fancywebsocket.js">
+  <h1>
+    <a href="#fancywebsocket.js" class="pilcrow">&#182;</a>
+    fancywebsocket.js
+  </h1>
+</div>
+
+  </div>
+  <div class="body"><p>Frontendfunktionalitäten für Sockethandhabung mit PHP-Server.
+Die Funktionalitäten sind so geschrieben, dass sie mit socket.io-Funktionen übereinstimmen. Somit kann das Frontend einheitlich die selben Funktionsnamen nutzen.</p>
+
+<p>auf Grundlage von: <a href='https://github.com/Flynsarmy/PHPWebSocket-Chat'>https://github.com/Flynsarmy/PHPWebSocket-Chat</a></p>
+  </div>
+</div>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">FancyWebSocket</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">callbacks</span> <span class="o">=</span> <span class="p">{};</span>
+
+  <span class="kd">var</span> <span class="nx">ws_url</span> <span class="o">=</span> <span class="nx">url</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">conn</span><span class="p">;</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">on</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event_name</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+    <span class="nx">callbacks</span><span class="p">[</span><span class="nx">event_name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">callbacks</span><span class="p">[</span><span class="nx">event_name</span><span class="p">]</span> <span class="o">||</span> <span class="p">[];</span>
+    <span class="nx">callbacks</span><span class="p">[</span><span class="nx">event_name</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">emit</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event_name</span><span class="p">,</span> <span class="nx">event_data</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span><span class="nx">event_name</span><span class="o">:</span> <span class="nx">event_name</span><span class="p">,</span> <span class="nx">content</span><span class="o">:</span> <span class="nx">event_data</span><span class="p">};</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">connect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">MozWebSocket</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;function&#39;</span> <span class="p">)</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MozWebSocket</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+    <span class="k">else</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">conn</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nx">onmessage</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">){</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+
+      <span class="nx">dispatch</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">event_name</span><span class="p">,</span> <span class="nx">data</span><span class="p">.</span><span class="nx">content</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nx">onclose</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="kc">null</span><span class="p">)}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nx">onopen</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">dispatch</span><span class="p">(</span><span class="s1">&#39;open&#39;</span><span class="p">,</span><span class="kc">null</span><span class="p">)}</span>
+  <span class="p">};</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">disconnect</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">conn</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+  <span class="p">};</span>
+
+  <span class="kd">var</span> <span class="nx">dispatch</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event_name</span><span class="p">,</span> <span class="nx">message</span><span class="p">){</span>
+    <span class="kd">var</span> <span class="nx">chain</span> <span class="o">=</span> <span class="nx">callbacks</span><span class="p">[</span><span class="nx">event_name</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">chain</span> <span class="o">==</span> <span class="s1">&#39;undefined&#39;</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">chain</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="nx">chain</span><span class="p">[</span><span class="nx">i</span><span class="p">](</span> <span class="nx">message</span> <span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span></pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Verbindung des Frontends mit entsprechenden PHP-Socket-Server</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">socket</span><span class="p">;</span>
+<span class="nx">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FancyWebSocket</span><span class="p">(</span><span class="s1">&#39;ws://127.0.0.1:9300&#39;</span><span class="p">);</span>
+<span class="nx">socket</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
