@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-26 10:48:41
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 16:40:03
          compiled from "C:\xampp\htdocs\git\masterprojekt\app\views\menu.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:5850512b597b358960-27084938%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:29733512e28d34d8a22-19292075%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -11,15 +11,15 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '5850512b597b358960-27084938',
+  'nocache_hash' => '29733512e28d34d8a22-19292075',
   'function' => 
   array (
   ),
-  'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_512b597b359a17_36671168',
   'has_nocache_code' => false,
+  'version' => 'Smarty-3.1.13',
+  'unifunc' => 'content_512e28d34d9e21_26167963',
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_512b597b359a17_36671168')) {function content_512b597b359a17_36671168($_smarty_tpl) {?><ul>
+<?php if ($_valid && !is_callable('content_512e28d34d9e21_26167963')) {function content_512e28d34d9e21_26167963($_smarty_tpl) {?><ul>
     <li><a href = "/">Startpage</a></li>
     <li><a href = "/game">Play</a></li>
     <li><a href = "/register">Register</a></li>

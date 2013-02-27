@@ -1,6 +1,6 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-26 11:25:52
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 16:41:07
          compiled from "..\views\scorePlayers.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:1246151276fd00edf11-36796699%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:14609512e2913308e76-86034580%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
@@ -17,15 +17,15 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '1246151276fd00edf11-36796699',
+  'nocache_hash' => '14609512e2913308e76-86034580',
   'function' => 
   array (
   ),
-  'version' => 'Smarty-3.1.13',
-  'unifunc' => 'content_51276fd01581c4_86048252',
   'has_nocache_code' => false,
+  'version' => 'Smarty-3.1.13',
+  'unifunc' => 'content_512e2913358227_28455569',
 ),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_51276fd01581c4_86048252')) {function content_51276fd01581c4_86048252($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<?php if ($_valid && !is_callable('content_512e2913358227_28455569')) {function content_512e2913358227_28455569($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title>Snake</title>

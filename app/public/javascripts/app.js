@@ -95,7 +95,7 @@ function moveAllPlayers(){
 // Nur in der Node.js-Variante steht das io-Objekt zur Verfügung
 // Die PHP-Variante definiert die socket-Variable in einer externen Datei
 if (window.io != undefined)
-    var socket = io.connect('192.168.1.196');
+    var socket = io.connect('localhost');
 
 /*
  * ## Output

@@ -1,6 +1,6 @@
 if locals.username
     p Logged in as: #{username}
-    a(href="logout") 
+    a(href="/logout") 
         input(type="button", class="button", value="Logout")
 else
     form(action="/login",method="post")

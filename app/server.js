@@ -9,7 +9,6 @@
 // Definition von Modulabhängigkeiten (siehe auch package.json)
 var express = require('express')
     , routes = require('./routes')
-    , user = require('./routes/user')
     , login = require('./routes/login')
     , logout = require('./routes/logout')
     , register = require('./routes/register')
@@ -47,7 +46,6 @@ app.configure('development', function(){
 // Definition von Routen
 app.get('/', routes.index);
 app.get('/game', game.game);
-app.get('/users', user.list);
 app.get('/login', login.form);
 app.post('/login', login.auth);
 app.get('/logout', logout.logout);
@@ -59,7 +57,7 @@ app.get('/score/:id', score.details);
 app.get('/impressum', impressum.impressum);
 
 // Initialisierung des Webservers
-var server = app.listen(app.get('port'), '192.168.1.196', function(){
+var server = app.listen(app.get('port'), 'localhost', function(){
     console.log("Express server listening on port " + app.get('port'));
 });
 
