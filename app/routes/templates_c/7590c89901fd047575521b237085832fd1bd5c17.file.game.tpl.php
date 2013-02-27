@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-26 10:50:17
+<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 12:43:23
          compiled from "..\views\game.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:7594512772ad536660-78414044%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -13,7 +13,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '96909e926ac391f92a72641495c68867f1efd560' => 
     array (
       0 => 'C:\\xampp\\htdocs\\git\\masterprojekt\\app\\views\\main.tpl',
-      1 => 1361871963,
+      1 => 1361872999,
       2 => 'file',
     ),
   ),
@@ -77,7 +77,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
          &copy; 2012 - 2013 - <strong>André Eife & Benjamin Teufel</strong>
     </div>
     <div id="bg_footer_re">
-         <a href="impressum.html">Impressum</a>
+         <a href="/impressum">Impressum</a>
     </div>
 </div>
 
