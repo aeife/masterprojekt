@@ -1,0 +1,13 @@
+{ "id" : 1, "username" : "Guest", "place" : 2, "_id" : { "$oid" : "5130ccf9e670865c0a000001" } }
+{ "id" : 1, "username" : "testuser", "place" : 1, "_id" : { "$oid" : "5130ccf9e670865c0a000002" } }
+{ "id" : 2, "username" : "Guest", "place" : 2, "_id" : { "$oid" : "5130cd46efdb36341b000001" } }
+{ "id" : 2, "username" : "Guest", "place" : 1, "_id" : { "$oid" : "5130cd46efdb36341b000002" } }
+{ "id" : 3, "username" : "testuser2", "place" : 2, "_id" : { "$oid" : "5130cd6af589d95018000001" } }
+{ "id" : 3, "username" : "testuser", "place" : 1, "_id" : { "$oid" : "5130cd6af589d95018000002" } }
+{ "id" : 4, "username" : "testuser", "place" : 2, "_id" : { "$oid" : "5130ce0692bc452c15000001" } }
+{ "id" : 4, "username" : "testuser3", "place" : 1, "_id" : { "$oid" : "5130ce0692bc452c15000002" } }
+{ "id" : 5, "username" : "testuser3", "place" : 2, "_id" : { "$oid" : "5130ce1092bc452c15000003" } }
+{ "id" : 5, "username" : "testuser", "place" : 1, "_id" : { "$oid" : "5130ce1092bc452c15000004" } }
+{ "id" : 6, "username" : "Guest", "place" : 3, "_id" : { "$oid" : "5130ced3c6ef150009000001" } }
+{ "id" : 6, "username" : "testuser", "place" : 2, "_id" : { "$oid" : "5130ced3c6ef150009000002" } }
+{ "id" : 6, "username" : "testuser2", "place" : 1, "_id" : { "$oid" : "5130ced3c6ef150009000003" } }
