@@ -1,7 +1,9 @@
 extends main
 
 block body
-    ul
+    h2 Score
+    br
+    ul#score
         each nr in games
             li
                 a(href = '/score/' + nr) Game #{nr}

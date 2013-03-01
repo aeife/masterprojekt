@@ -1,8 +1,21 @@
 extends main
 
 block body
+    h2 Highscore
+    br
+    div#scoreDesc
+        | Pro Platz werden folgende Punkte verteilt:
+        br
+        br
+        | 1. Platz: 50 Punkte
+        br
+        | 2. Platz: 25 Punkte
+        br
+        | 3. Platz: 10 Punkte
+        br
+        | 4. Platz: 5 Punkte
     ol
-        script
-            console.log(players);
         each player in players
-            li #{player.username} #{player.score}
+            li
+                p.scorePlayers #{player.username} 
+                | #{player.score}

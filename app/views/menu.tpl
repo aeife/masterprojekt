@@ -1,7 +1,7 @@
 <ul>
-    <li><a href = "/">Startpage</a></li>
-    <li><a href = "/game">Play</a></li>
-    <li><a href = "/register">Register</a></li>
-    <li><a href = "/score">Game Archive</a></li>
-    <li><a href = "/score/players">Player Highscore</a></li>
+    <li><a href = "/">Startseite</a></li>
+    <li><a href = "/game">Spielen</a></li>
+    <li><a href = "/register">Registrierung</a></li>
+    <li><a href = "/score">Spielarchiv</a></li>
+    <li><a href = "/score/players">Highscore</a></li>
 </ul>

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 16:40:03
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 16:06:25
          compiled from "..\views\index.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:27886512e28d32a5ff0-94343493%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '8eadb240e3fe59b96b0486d0f1203cdec08347ec' => 
     array (
       0 => '..\\views\\index.tpl',
-      1 => 1361795279,
+      1 => 1362150368,
       2 => 'file',
     ),
     '96909e926ac391f92a72641495c68867f1efd560' => 
@@ -21,9 +21,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.13',
   'unifunc' => 'content_512e28d32e51a9_71399935',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_512e28d32e51a9_71399935')) {function content_512e28d32e51a9_71399935($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -51,7 +51,17 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <!-- Content -->
 <div id="bg_content">
 
-    Awesome Game!
+    <img src="../public/images/spiel.png"/>
+    <h2>Willkommen!</h2>
+    <br>
+    Schnelle Reaktion und taktisches Gespür sind notwendig, um den Highscore zu erklimmen.
+    <h3><u>Features:</u></h3>
+    <ul>
+        <li>Sofort loslegen, ohne Plugins.</li>
+        <li>Mehrspielermodus (bis zu 4 Spieler)</li>
+        <li>Archiv aller bisherigen Spiele</li>
+        <li>Globaler Highscore</li>
+    </ul>
 
 
 

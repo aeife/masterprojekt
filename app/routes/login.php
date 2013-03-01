@@ -16,7 +16,7 @@
 
             header( 'Location: /' );
         } else {
-            echo "error";
+            header( 'Location: /' );
         }
     }
 

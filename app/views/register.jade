@@ -1,6 +1,8 @@
 extends main
 
 block body
+    h2 Registrierung
+    br
     - if( error == 'password' )
         p
             Not the same password!
@@ -15,9 +17,11 @@ block body
         label(for="name") Name: 
         input(type="text", name="name")
         br
-        label(for="password") Password:
+        label(for="password") Passwort:
         input(type="password", name="password")
         br
-        label(for="passwordRepeat") Repeat Password: 
+        label(for="passwordRepeat") Passwort wiederholen: 
         input(type="password", name="passwordRepeat")
-        input(type="submit", value="Submit")
+        br
+        label &nbsp;
+        input(type="submit", value="Registrieren")

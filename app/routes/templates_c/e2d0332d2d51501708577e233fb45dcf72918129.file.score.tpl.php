@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-02-27 16:41:10
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 15:40:00
          compiled from "..\views\score.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:14455512e291690ba75-00466780%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'e2d0332d2d51501708577e233fb45dcf72918129' => 
     array (
       0 => '..\\views\\score.tpl',
-      1 => 1361793584,
+      1 => 1362148798,
       2 => 'file',
     ),
     '96909e926ac391f92a72641495c68867f1efd560' => 
@@ -21,9 +21,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.13',
   'unifunc' => 'content_512e2916959dc9_92408619',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_512e2916959dc9_92408619')) {function content_512e2916959dc9_92408619($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -51,8 +51,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <!-- Content -->
 <div id="bg_content">
 
-    <h1>SCORE</h1>
-    <ul>
+    <h2>SCORE</h2>
+    <br/>
+    <ul id="score">
         <?php  $_smarty_tpl->tpl_vars['row'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['row']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['list']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['row']->key => $_smarty_tpl->tpl_vars['row']->value){

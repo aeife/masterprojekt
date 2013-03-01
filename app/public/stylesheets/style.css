@@ -84,10 +84,58 @@ text-decoration:none;
 #bg_content {
 min-height:350px;
 padding:5px 10px 15px 10px;
+font-size:14px;
 }
 
 #bg_content h2 {
 margin:0px;
+}
+
+#bg_content ol {
+margin:0px;
+}
+
+#bg_content label{
+width: 250px;
+line-height: 25px;
+float:left;
+}
+
+#bg_content img{
+float:right;
+padding-right: 20px;
+display: block;
+}
+
+#score {
+margin:0px;
+padding:0px;   
+}
+
+#score li {
+float:left;
+width:120px;
+margin:0px;
+padding:0px;
+list-style:none;
+}
+
+#score li a{
+text-decoration: none;
+color:#1E9600;
+}
+
+.scorePlayers{
+width:150px;
+padding:0px;
+padding-left:10px;
+margin:0px;
+display:inline-block;
+}
+
+#scoreDesc{
+float:right;
+width: 400px;
 }
 
 #bg_footer {

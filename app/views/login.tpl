@@ -1,6 +1,6 @@
 {if isset($smarty.session.username) }
     <br/>
-    Logged in as: {$smarty.session.username}
+    Eingeloggt als: {$smarty.session.username}
     <a href="/logout"><input type="button" class="button" value="Logout"></a>
 {else}
     <form action="login" method="post">

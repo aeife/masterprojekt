@@ -11,9 +11,9 @@
             var username = "{$username}"; 
         {/if}
     </script>
-
-    <canvas id="canvas" width="500" height="500"></canvas>
-
+    <center>
+        <canvas id="canvas" width="500" height="500"></canvas>
+    </center>
     <script src="../public/javascripts/fancywebsocket.js"></script>
     <script src="../public/javascripts/level.js" type="text/javascript"></script>
     <script src="../public/javascripts/player.js" type="text/javascript"></script>
