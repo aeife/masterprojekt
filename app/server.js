@@ -74,6 +74,8 @@ spawns[2] = {x: gridSize/2, y: 5, direction: "south"};
 spawns[3] = {x: gridSize/2, y: gridSize-5, direction: "north"};
 var colors = ['blue', 'red', 'green', 'pink'];
 var places = [];
+var moveInterval;
+var foodInterval;
 
 
 /*
@@ -115,14 +117,14 @@ io.sockets.on('connection', function(socket){
     socket.on("startGame", function(){
         io.sockets.emit('playerStartedGame');
 
-        setInterval(function(){
+        foodinterval = setInterval(function(){
             var x = Math.floor(Math.random() * (gridSize-1));
             var y = Math.floor(Math.random() * (gridSize-1));
 
             io.sockets.emit('newFoodCoordinates', {x: x, y: y}); 
         }, 1000);
 
-        setInterval(function(){
+        moveinterval = setInterval(function(){
             io.sockets.emit('movePlayers'); 
         }, 50);
 
@@ -232,18 +234,23 @@ io.sockets.on('connection', function(socket){
                 collection.findOne({}, {'sort': {id: -1}} , function (err, games){
                     if(err) throw err;
                     
-                    if (games){
-                        console.log(games);
-                        for (var i = 0; i < places.length; i++){
-                            collection.insert({id: games.id+1, username: places[i], place: places.length-i}, {w:1}, function(err, result) {
-                                if (err) throw err;
-                            });
-                        }
+                    if (!games){
+                        gameid = 0;
+                    } else {
+                        gameid = games.id;
+                    }
+                    console.log(games);
+                    for (var i = 0; i < places.length; i++){
+                        collection.insert({id: gameid+1, username: places[i], place: places.length-i}, {w:1}, function(err, result) {
+                            if (err) throw err;
+                        });
                     }
 
-                // Übermittlung des Spielendes an alle Spieler
-                io.sockets.emit('gameOver', {gameId: games.id+1});
-
+                    // Übermittlung des Spielendes an alle Spieler
+                    io.sockets.emit('gameOver', {gameId: gameid+1});
+                    places = [];
+                    clearInterval(foodinterval);
+                    clearInterval(moveinterval);
                 });
 
             });
