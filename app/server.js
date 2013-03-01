@@ -248,6 +248,8 @@ io.sockets.on('connection', function(socket){
 
                     // Übermittlung des Spielendes an alle Spieler
                     io.sockets.emit('gameOver', {gameId: gameid+1});
+
+                    // Für nächstes Spiel: Platzierungen zurücksetzen und Intervalle stoppen
                     places = [];
                     clearInterval(foodinterval);
                     clearInterval(moveinterval);

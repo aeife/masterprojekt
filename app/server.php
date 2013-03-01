@@ -180,6 +180,8 @@ function dead($data){
 
         // Übermittlung des Spielendes an alle Spieler
         emitAll('gameOver', ['gameId' => $row[0]+1]);
+
+        // Für nächstes Spiel: Platzierungen zurücksetzen
         $places = [];
     }
 }
