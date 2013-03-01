@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 15:40:00
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 16:31:33
          compiled from "..\views\score.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:14455512e291690ba75-00466780%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'e2d0332d2d51501708577e233fb45dcf72918129' => 
     array (
       0 => '..\\views\\score.tpl',
-      1 => 1362148798,
+      1 => 1362149505,
       2 => 'file',
     ),
     '96909e926ac391f92a72641495c68867f1efd560' => 
@@ -51,7 +51,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <!-- Content -->
 <div id="bg_content">
 
-    <h2>SCORE</h2>
+    <h2>Score</h2>
     <br/>
     <ul id="score">
         <?php  $_smarty_tpl->tpl_vars['row'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['row']->_loop = false;

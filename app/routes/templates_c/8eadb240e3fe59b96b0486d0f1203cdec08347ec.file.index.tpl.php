@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 16:06:25
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 16:26:25
          compiled from "..\views\index.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:27886512e28d32a5ff0-94343493%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '8eadb240e3fe59b96b0486d0f1203cdec08347ec' => 
     array (
       0 => '..\\views\\index.tpl',
-      1 => 1362150368,
+      1 => 1362150704,
       2 => 'file',
     ),
     '96909e926ac391f92a72641495c68867f1efd560' => 
@@ -57,7 +57,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     Schnelle Reaktion und taktisches Gespür sind notwendig, um den Highscore zu erklimmen.
     <h3><u>Features:</u></h3>
     <ul>
-        <li>Sofort loslegen, ohne Plugins.</li>
+        <li>Sofort loslegen, ohne Plugins</li>
         <li>Mehrspielermodus (bis zu 4 Spieler)</li>
         <li>Archiv aller bisherigen Spiele</li>
         <li>Globaler Highscore</li>

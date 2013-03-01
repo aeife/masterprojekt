@@ -168,17 +168,19 @@ function dead($data){
         $result = mysql_query("SELECT max(id) FROM game");
         $row = mysql_fetch_array($result);
 
-        if ($row[0]){
-            echo "bin drin";
-            for ($i = 0; $i < sizeof($places); $i++){
-                echo $i;
-                $query = "INSERT INTO game VALUES(NULL, '". ($row[0]+1) . "', '". $places[$i] . "', '". (sizeof($places)-$i) . "')";
-                mysql_query($query);
-            }
+        if (!$row[0]){
+            $row[0] = 0;
         }
+        for ($i = 0; $i < sizeof($places); $i++){
+            echo $i;
+            $query = "INSERT INTO game VALUES(NULL, '". ($row[0]+1) . "', '". $places[$i] . "', '". (sizeof($places)-$i) . "')";
+            mysql_query($query);
+        }
+        
 
         // Übermittlung des Spielendes an alle Spieler
         emitAll('gameOver', ['gameId' => $row[0]+1]);
+        $places = [];
     }
 }
 

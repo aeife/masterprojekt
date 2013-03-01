@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 15:14:55
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 16:30:13
          compiled from "..\views\login.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:30870512e28f6685e71-46843942%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'a821ce6a5bbf1f105437c560c5526fe73fdbc4b1' => 
     array (
       0 => '..\\views\\login.tpl',
-      1 => 1362147270,
+      1 => 1362147496,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_512e28f66bb993_48030944')) {function content_512e28f66bb993_48030944($_smarty_tpl) {?><?php if (isset($_SESSION['username'])){?>
     <br/>
-    Logged in as: <?php echo $_SESSION['username'];?>
+    Eingeloggt als: <?php echo $_SESSION['username'];?>
 
     <a href="/logout"><input type="button" class="button" value="Logout"></a>
 <?php }else{ ?>
