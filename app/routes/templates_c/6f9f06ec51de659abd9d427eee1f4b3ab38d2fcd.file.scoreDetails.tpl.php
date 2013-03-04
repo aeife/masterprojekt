@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 15:51:51
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-04 11:52:43
          compiled from "..\views\scoreDetails.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:23963512e290b5aa113-98504367%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -13,7 +13,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '96909e926ac391f92a72641495c68867f1efd560' => 
     array (
       0 => 'C:\\xampp\\htdocs\\git\\masterprojekt\\app\\views\\main.tpl',
-      1 => 1361872999,
+      1 => 1362391669,
       2 => 'file',
     ),
   ),
@@ -28,7 +28,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <?php if ($_valid && !is_callable('content_512e290b68b412_69286788')) {function content_512e290b68b412_69286788($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Snake</title>
+<title>MultiCollide</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="language" content="de">
 <link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
