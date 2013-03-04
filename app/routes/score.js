@@ -1,24 +1,32 @@
+/*
+ * # score.js
+ *
+ * Router zur Verwaltung des Highscores und Spielarchivs
+ */
 
+/*
+ * ## exports.list
+ *
+ * Rendern des Templates zur Anzeige einer Liste aller vorherigen Spiele
+ */
 exports.list = function(req, res){
 
-    //require database connection
+    // Datenbankinformationen einbinden
     var db = require('../database.js');
 
-    //init database
     db.init(function(err, db) {
         if(err) throw err;
 
-        //select table of db
         var collection = db.collection('game');
 
-        //find one and only user with credentials
+        // Finden aller verschiedenen Spiel-IDs
         collection.distinct('id', function (err, games){
             if(err) throw err;
             
-            //if user is found, write username in session
+            // alle gefundenen Spiele dem Template übergeben
             if (games){
                 console.log(games);
-                res.render('score', { title: 'Express', games: games, username: req.session.username});
+                res.render('score', {games: games, username: req.session.username});
             }
 
         });
@@ -27,26 +35,29 @@ exports.list = function(req, res){
     
 };
 
+/*
+ * ## exports.details
+ *
+ * Rendern des Templates zur Anzeige des Ergebnisses eines Spiels
+ */
 exports.details = function(req, res){
 
-    //require database connection
+    // Datenbankinformationen einbinden
     var db = require('../database.js');
 
-    //init database
     db.init(function(err, db) {
         if(err) throw err;
 
-        //select table of db
         var collection = db.collection('game');
 
-        //find one and only user with credentials
+        // Finden aller am Spiel teilgenommenen Spieler, sortiert nach ihrer Platzierung
         collection.find({id: parseInt(req.params.id)}, {'sort': {place: 1}}).toArray(function(err, items) {
             if(err) throw err;
             
-            //if user is found, write username in session
+            // Übergabe aller Informationen an das Template
             if (items){
                 console.log(items);
-                res.render('scoreDetails', { title: 'Express', games: items, username: req.session.username});
+                res.render('scoreDetails', {games: items, username: req.session.username});
             }
         });
 
@@ -54,21 +65,25 @@ exports.details = function(req, res){
     
 };
 
+/*
+ * ## exports.players
+ *
+ * Rendern des Templates zur Anzeige des Spieler-Highscores
+ */
 exports.players = function(req, res){
-    //require database connection
+    //  Datenbankinformationen einbinden
     var db = require('../database.js');
 
-    //init database
     db.init(function(err, db) {
         if(err) throw err;
 
-        //select table of db
         var collection = db.collection('game');
 
+        // Finden aller verschiedenen Nutzer
         collection.distinct('username', function (err, users){
             if(err) throw err;
             
-            //if user is found, write username in session
+            // Für jeden gefundenen Nutzer Berechnung seiner Punkte
             if (users){
 
                 users.splice(users.indexOf('Guest'), 1);
@@ -79,6 +94,7 @@ exports.players = function(req, res){
                     players[i] = {username: users[i], score: 0};
                 }
 
+                // Sortierung aller Einträge nach Nutzernamen, Gäste ausgeschlossen
                 collection.find({username: {$ne: 'Guest'}}, {'sort': {username: 1}}).toArray(function(err, items) {
                     if(err) throw err;
 

@@ -1,8 +1,14 @@
-
 /*
- * GET game page.
+ * # game.js
+ *
+ * Router zur Verwaltung des Spiels
  */
 
+/*
+ * ## exports.game
+ *
+ * Rendern des Templates zur Anzeige des Spiels und Pbergabe des Nutzernamens aus der Session
+ */
 exports.game = function(req, res){
-  res.render('game', { title: 'Express', username: req.session.username});
+  res.render('game', {username: req.session.username});
 };

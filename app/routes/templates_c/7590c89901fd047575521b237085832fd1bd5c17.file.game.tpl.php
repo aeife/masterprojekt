@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.13, created on 2013-03-01 16:09:55
+<?php /* Smarty version Smarty-3.1.13, created on 2013-03-04 11:14:35
          compiled from "..\views\game.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:28748512e28fc499719-63157442%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,13 +7,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '7590c89901fd047575521b237085832fd1bd5c17' => 
     array (
       0 => '..\\views\\game.tpl',
-      1 => 1362150590,
+      1 => 1362392019,
       2 => 'file',
     ),
     '96909e926ac391f92a72641495c68867f1efd560' => 
     array (
       0 => 'C:\\xampp\\htdocs\\git\\masterprojekt\\app\\views\\main.tpl',
-      1 => 1361872999,
+      1 => 1362391669,
       2 => 'file',
     ),
   ),
@@ -28,7 +28,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <?php if ($_valid && !is_callable('content_512e28fc4e3b97_20805645')) {function content_512e28fc4e3b97_20805645($_smarty_tpl) {?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Snake</title>
+<title>MultiCollide</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="language" content="de">
 <link rel="stylesheet" type="text/css" href="../public/stylesheets/style.css">
@@ -55,8 +55,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <div id="bg_content">
 
      <script>
-        <?php if (isset($_smarty_tpl->tpl_vars['username']->value)){?>
-            var username = "<?php echo $_smarty_tpl->tpl_vars['username']->value;?>
+        <?php if (isset($_SESSION['username'])){?>
+            var username = "<?php echo $_SESSION['username'];?>
 "; 
         <?php }?>
     </script>

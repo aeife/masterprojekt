@@ -1,36 +1,49 @@
+/*
+ * # login.js
+ *
+ * Router zur Verwaltung des Logins
+ */
 
+/*
+ * ## exports.form
+ *
+ * Rendern des Templates zur Anzeige des Loginbereichs
+ */
 exports.form = function(req, res){
-    res.render('login', { title: 'Express'});
+    res.render('login');
 };
 
+/*
+ * ## exports.auth
+ *
+ * Authorisierung eines Loginversuchs
+ */
 exports.auth = function(req, res){
     
-    //require database connection
+    // Datenbankinformationen einbinden
     var db = require('../database.js');
 
-    //init database
     db.init(function(err, db) {
         if(err) throw err;
 
-        //select table of db
         var collection = db.collection('user');
 
-        //get params from html form
         var username = req.body.name;
-        //create md5
+
+        // Verschlüsselung des Passworts mittels MD5
         var password = require('crypto').createHash('md5').update(req.body.password).digest("hex");
 
-        //find one and only user with credentials
+        // Nach Nutzer mit Logininformationen suchen
         collection.findOne({username: username, password: password}, function (err, users){
             if(err) throw err;
             
-            //if user is found, write username in session
+            // Wenn Nutzer gefunden wurde, Nutzernamen in Session eintragen
             if (users){
                 req.session.username = username;
             }
 
 
-            //redirect
+            // Weiterleitung zur Startseite
             res.redirect('/');
         });
 

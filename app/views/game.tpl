@@ -7,8 +7,8 @@
 
 {block name=body}
      <script>
-        {if isset($username) }
-            var username = "{$username}"; 
+        {if isset($smarty.session.username) }
+            var username = "{$smarty.session.username}"; 
         {/if}
     </script>
     <center>

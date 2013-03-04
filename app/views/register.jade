@@ -3,15 +3,8 @@ extends main
 block body
     h2 Registrierung
     br
-    - if( error == 'password' )
-        p
-            Not the same password!
-    - else if (error == 'passwordLength')
-        p
-            Password too short (at least 5 chars)!
-    - else if (error == 'username')
-        p
-            Username already exists!
+    - if(error)
+        p #{error}
 
     form(action="/register", method="post")
         label(for="name") Name: 
