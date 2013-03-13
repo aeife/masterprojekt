@@ -266,12 +266,12 @@ io.sockets.on('connection', function(socket){
     /*
      * ## socket.on('disconnect')
      *
-     * Verbindung zu einem Spieler ist abgebrochen
+     * Verbindung zu einem Spieler ist abgebrochen oder der Spieler ist ausgeschieden
      *
-     * @param {object} data Datenobjekt der Callback-Funktion mit Informationen zum Client, welcher die Verbindung abgebrochen hat
+     * @param {object} data Datenobjekt der Callback-Funktion mit Informationen zum Client, welcher ausgeschieden ist
      */
     socket.on("disconnect", function(data){
-        // Übermittlung, dass ein Client das Spiel verlassen hat, an alle anderen Spieler
+        // Übermittlung, dass ein Client das Spiel beendet hat, an alle anderen Spieler
         socket.broadcast.emit('playerDisconnected', {clientId: socket.id});
 
         // Entfernen des Spielers aus dem allgemeinen Spielerfeld

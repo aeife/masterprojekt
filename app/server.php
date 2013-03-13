@@ -216,7 +216,7 @@ function wsOnOpen($clientId)
 /*
  * ## wsOnClose
  *
- * Verbindung zu einem Spieler ist abgebrochen
+ * Verbindung zu einem Spieler ist abgebrochen oder der Spieler ist ausgeschieden
  *
  * @param {int} clientId ID des betroffenen Clients
  * @param {object} status Close-Status des Clients

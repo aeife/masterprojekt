@@ -121,7 +121,7 @@ Player.prototype.move = function(){
 
 
     // Entfernen des letzten Spielerelements, nur wenn kein Essen mehr gespeichert
-    // shift eines Arrays löcht letztes Feld
+    // shift eines Arrays löscht letztes Feld
     if (this.ate == 0){
         level.grid[this.fields[0].x][this.fields[0].y].player = false;
         level.drawTile(this.fields[0].x, this.fields[0].y, 'white');
